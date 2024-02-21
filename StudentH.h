@@ -6,6 +6,7 @@
 // #include <ctype.h>
 // #include "input.h"
 // #include "Data_Base.h"
+// new
 
 #define MAX_STUDENTS 25
 #define LIST_STUDENTS 20
