@@ -3,6 +3,7 @@
 // #include <time.h>
 // #include <ctype.h>
 // #include "Data_Base.h"
+// #include 
 
 #define MAX_HISTORY_ENTRIES 100
 
@@ -236,69 +237,83 @@ void readLecturer() {
         getchar(); // Consume newline character
 
         switch (choice) {
-            case 1: {
-                // Display all active lecturers
-                if (numLecturers > 0) {
-                    printf("\nList of All Lecturers:\n");
-                    for (int i = 0; i < numLecturers; i++) {
-                        if (lecturers[i].active) { // Check if lecturer is active
-                            char departmentName[MAX_NAME_LEN];
-                            int departmentFound = 0;
-                            for (int j = 0; j < MAX_DEPT; j++) {
-                                if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0) {
-                                    strcpy(departmentName, departments[j].Dept_Name);
-                                    departmentFound = 1;
-                                    break;
-                                }
-                            }
-                            if (!departmentFound) {
-                                strcpy(departmentName, "N/A");
-                            }
-
-                            char courseName[MAX_NAME_LEN];
-                            int courseFound = 0;
-                            for (int k = 0; k < MAX_CORS; k++) {
-                                if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0) {
-                                    strcpy(courseName, courses[k].name);
-                                    courseFound = 1;
-                                    break;
-                                }
-                            }
-                            if (!courseFound) {
-                                strcpy(courseName, "N/A");
-                            }
-
-                            // Find and print module names
-                            char moduleNames[MAX_NAME_LEN] = ""; // Concatenated string to hold all module names
-                            for (int m = 0; m < MAX_MOD; m++) {
-                                if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0) {
-                                    strcat(moduleNames, modules[m].module_name);
-                                    strcat(moduleNames, ", ");
-                                }
-                            }
-                            if (strlen(moduleNames) > 0) {
-                                // Remove the trailing comma and space
-                                moduleNames[strlen(moduleNames) - 2] = '\0';
-                            } else {
-                                strcpy(moduleNames, "N/A");
-                            }
-
-                            printf("ID: %s\n", lecturers[i].id);
-                            printf("Name: %s\n", lecturers[i].name);
-                            printf("Gender: %c\n", lecturers[i].gender);
-                            printf("Phone: %s\n", lecturers[i].phone);
-                            printf("Email: %s\n", lecturers[i].email);
-                            printf("Department Name: %s\n", departmentName);
-                            printf("Course Name: %s\n", courseName);
-                            printf("Module Names: %s\n", moduleNames);
-                            printf("\n");
-                        }
-                    }
-                } else {
-                    printf("No lecturers to display!\n");
-                }
-                break;
+        case 1: {
+    // Display all active lecturers
+    if (numLecturers > 0) {
+        printf("\nAll Lecturer Personal Details\n");
+        printf("---------------------------------------------------------------------------------------------\n");
+        printf("| %-10s | %-20s | %-6s | %-11s | %-30s |\n", "ID", "Lecturer Name","Gender", "Phone", "Email");
+        printf("---------------------------------------------------------------------------------------------\n");
+        
+        for (int i = 0; i < numLecturers; i++) {
+            if (lecturers[i].active) { // Check if lecturer is active
+                printf("| %-10s | %-20s | %-6c | %-11s | %-30s |\n", 
+                       lecturers[i].id, lecturers[i].name, lecturers[i].gender, lecturers[i].phone, lecturers[i].email);
             }
+        }
+        printf("---------------------------------------------------------------------------------------------\n");
+
+        printf("\nAll Lecturer Academic Details\n");
+        printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf("| %-10s | %-20s | %-30s | %-20s | %-70s |\n", "ID", "Lecturer Name", "Department Name", "Course Name", "Module Name");
+        printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        
+        for (int i = 0; i < numLecturers; i++) {
+            if (lecturers[i].active) { // Check if lecturer is active
+                char departmentName[MAX_NAME_LEN];
+                int departmentFound = 0;
+                for (int j = 0; j < MAX_DEPT; j++) {
+                    if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0) {
+                        strcpy(departmentName, departments[j].Dept_Name);
+                        departmentFound = 1;
+                        break;
+                    }
+                }
+                if (!departmentFound) {
+                    strcpy(departmentName, "N/A");
+                }
+
+                char courseName[MAX_NAME_LEN];
+                int courseFound = 0;
+                for (int k = 0; k < MAX_CORS; k++) {
+                    if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0) {
+                        strcpy(courseName, courses[k].name);
+                        courseFound = 1;
+                        break;
+                    }
+                }
+                if (!courseFound) {
+                    strcpy(courseName, "N/A");
+                }
+
+                // Find and print module names
+                char moduleNames[MAX_NAME_LEN] = ""; // Concatenated string to hold all module names
+                for (int m = 0; m < MAX_MOD; m++) {
+                    if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0) {
+                        strcat(moduleNames, modules[m].module_name);
+                        strcat(moduleNames, ", ");
+                    }
+                }
+                if (strlen(moduleNames) > 0) {
+                    // Remove the trailing comma and space
+                    moduleNames[strlen(moduleNames) - 2] = '\0';
+                } else {
+                    strcpy(moduleNames, "N/A");
+                }
+
+                printf("| %-10s | %-20s | %-30s | %-20s | %-70s |\n", 
+                       lecturers[i].id, lecturers[i].name, departmentName, courseName, moduleNames);
+            }
+        }
+        printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    } else {
+        printf("No lecturers to display!\n");
+    }
+    break;
+}
+
+
+
             case 2: {
                 // Search for a specific lecturer by name or ID
                 if (numLecturers > 0) {
