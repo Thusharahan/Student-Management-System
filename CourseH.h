@@ -335,7 +335,7 @@ void readSpecificCourse(void (*previousMenu)()) {
     for (int i = 0; i < numCourses; ++i) {
         if (strcmp(courses[i].id, courseId) == 0 && courses[i].active) {
             found = true;
-            printf("Course Name: %s\n", courses[i].name);
+            printf("\nCourse Name: %s\n", courses[i].name);
             printf("Course ID: %s\n", courses[i].id);
            for (int j = 0; j < MAX_DEPT; ++j) {
                 if (strcmp(departments[j].Dept_ID, courses[i].departmentId) == 0 && departments[j].active) {
@@ -347,13 +347,16 @@ void readSpecificCourse(void (*previousMenu)()) {
                     printf("In-Charge lecturer Name: %s\n", lecturers[j].name);
                 }
             }
-            printf("Modules:\n");
+            printf("\nModules:\n");
+            printf("----------------------------------------------------\n");
+            printf("| %-15s | %-30s |\n", "Module ID", "Module Name");
+            printf("----------------------------------------------------\n");
             for (int j = 0; j < MAX_MOD; ++j) {
-                if (strcmp(modules[j].course_id, courseId) == 0 && modules[j].active) {
-                    printf("Module ID: %s\n", modules[j].module_id);
-                    printf("Module Name: %s\n", modules[j].module_name);
+                if (strcmp(modules[j].course_id, courses[i].id) == 0 && modules[j].active) {
+                    printf("| %-15s | %-30s |\n", modules[j].module_id, modules[j].module_name);
                 }
             }
+            printf("-------------------------------------------------------------\n");
             printf("\n");
             break;
         }
@@ -383,28 +386,42 @@ void readSpecificCourse(void (*previousMenu)()) {
         readSpecificCourse(previousMenu); // Call the function recursively
     }
 }
-
 void readAllCourses(void (*previousMenu)()) {
+    printf("\n\n");
+    printf("\033[1m\033[4m"); // Bold and underline
     printf("All Courses:\n");
+    printf("\033[0m"); // Reset formatting
+
     for (int i = 0; i < numCourses; ++i) {
         if (courses[i].active) {
+            printf("\n\n");
             printf("Course Name: %s\n", courses[i].name);
             printf("Course ID: %s\n", courses[i].id);
-            printf("Department Name: %s\n", departments[i].Dept_ID);
-            printf("In-charge Lecturer ID: %s\n", lecturers[i].name);
-            printf("Modules:\n");
+            for(int j=0;j<MAX_DEPT;++j){
+               if(strcmp(courses[i].departmentId,departments[j].Dept_ID)==0) {
+                printf("Department name: %s\n", departments[j].Dept_Name);
+                break;}
+            }
+            for(int j=0;j<MAX_LEC;++j){
+               if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id)==0) {
+                printf("In-Charge lecturer name: %s\n", lecturers[j].name);
+                break;}
+            }
+            printf("\nModules:\n");
+            printf("----------------------------------------------------\n");
+            printf("| %-15s | %-30s |\n", "Module ID", "Module Name");
+            printf("----------------------------------------------------\n");
             for (int j = 0; j < MAX_MOD; ++j) {
                 if (strcmp(modules[j].course_id, courses[i].id) == 0 && modules[j].active) {
-                    printf("Module ID: %s\n", modules[j].module_id);
-                    printf("Module Name: %s\n", modules[j].module_name);
+                    printf("| %-15s | %-30s |\n", modules[j].module_id, modules[j].module_name);
                 }
             }
-            printf("\n\n");
+            printf("-------------------------------------------------------------\n");
         }
     }
 
     int option1;
-    printf("Choose an option:\n");
+    printf("\nChoose an option:\n");
     printf("1. Return to menu\n");
     printf("2. View specific course details\n");
     printf("Enter your choice: ");
@@ -416,6 +433,7 @@ void readAllCourses(void (*previousMenu)()) {
         readSpecificCourse(previousMenu); // Call the function recursively
     }
 }
+
 
 
 void readCourse() {
@@ -446,29 +464,24 @@ void editCourse(char *User_ID) {
     char courseId[10];
     printf("Enter the course ID to edit: ");
     scanf("%s", courseId);
-    if(isValidFormat(courseId)){
-        goto label_6;
-    }
-    else{
+    if (!isValidFormat(courseId)) {
         printf("Input is invalid!\n");
-          printf("Do you want to contnue(y/n):");
-                 char choice_1;
-                 scanf(" %c", &choice_1);
-                 if (choice_1 == 'y' || choice_1 == 'Y') 
-                  {editCourse(User_ID);}
-                 else if(choice_1 == 'n' || choice_1 == 'N') 
-                 {return;}
+        printf("Do you want to continue (y/n): ");
+        char choice_1;
+        scanf(" %c", &choice_1);
+        if (choice_1 == 'y' || choice_1 == 'Y') {
+            editCourse(User_ID);
+        } else if (choice_1 == 'n' || choice_1 == 'N') {
+            return;
+        }
     }
-
 
     bool found = false;
-    bool validInput=false;
-    label_6:
     for (int i = 0; i < numCourses; ++i) {
         if (strcmp(courses[i].id, courseId) == 0 && courses[i].active) {
             found = true;
             int choice;
-             printf("\n\n");
+            printf("\n\n");
             printf("Select field to edit:\n");
             printf("1. Course Name\n");
             printf("2. Department ID\n");
@@ -479,117 +492,92 @@ void editCourse(char *User_ID) {
 
             // Variable to store old value before editing
             char oldValue[50];
-           
             switch (choice) {
                 case 1:
                     // Save old value
                     strcpy(oldValue, courses[i].name);
-                    printf("current name %s\n\n ",oldValue);
-                    label_8:
+                    printf("Current name: %s\n\n", oldValue);
                     printf("Enter new course name: ");
                     scanf("%s", courses[i].name);
-                    if(!isValidNameCourse(courses[i].name))
-        {char choice_1;
-          printf("\n");
-          printf("\nName should not have any special charecters\n");
-          printf("\n");
-          printf("\nDo you want to contnue (Enter y for yes /n for no): ");
-           label_11:
-                 scanf(" %c", &choice_1);
-                 if (choice_1 == 'y' || choice_1 == 'Y') 
-                  {goto  label_8;}
-                 else if(choice_1 == 'n' || choice_1 == 'N') 
-                 {return;}
-                 else {printf("\ninvalid input....\n (Enter y for yes /n for no) ");
-                 goto label_11;
-                 }
-        }
-
-                    addHistoryEntry(User_ID, "course", "edit", courses[i].name, oldValue, courseId);
-                    label_13:
-                    printf("Do you want to edit another field in same id(y/n)");
-                    char choice_2;
-                    scanf(" %c", &choice_2);
-                 if (choice_2 == 'y' || choice_2 == 'Y') 
-                  {goto  label_6;}
-                 else if(choice_2 == 'n' || choice_2 == 'N') 
-                 {return;}
-                 else {printf("\ninvalid input....\n (Enter y for yes /n for no) ");
-                 goto label_13;
-                 }
-
+                    if (!isValidNameCourse(courses[i].name)) {
+                        printf("Name should not have any special characters.\n");
+                        label_10:
+                        printf("Do you want to continue (y/n): ");
+                        char choice_2;
+                        scanf(" %c", &choice_2);
+                        if (choice_2 == 'y' || choice_2 == 'Y') {
+                            editCourse(User_ID);
+                        } else if (choice_2 == 'n' || choice_2 == 'N') {
+                            return;
+                        }
+                        else{printf("In Valid input");
+                            goto label_10;}
+                    }
+                    addHistoryEntry(User_ID, "course name", "edit", courses[i].name, oldValue, courseId);
                     break;
 
-
-                    case 2:
+                case 2:
                     // Save old value
                     strcpy(oldValue, courses[i].departmentId);
-                    do {printf("current department ID %s \n",oldValue);
+                    char tempDeptId[10]; 
+                    bool departmentExists = false;
+                    do {
+                        printf("Current department ID: %s\n", oldValue);
                         printf("Enter new department ID: ");
-                        scanf("%s", courses[i].departmentId);
+                        scanf("%s", tempDeptId);
 
                         // Check if department ID exists
-                        bool departmentExists = false;
-                        for (int i = 0; i < MAX_DEPT; ++i) {
-                            if (strcmp(courses[i].departmentId, departments[i].Dept_ID) == 0) {
+                        for (int j = 0; j < MAX_DEPT; ++j) {
+                            if (strcmp(tempDeptId, departments[j].Dept_ID) == 0) {
                                 departmentExists = true;
+                                strcpy(courses[i].departmentId, tempDeptId); // Copy temp value to courses array
+                                addHistoryEntry(User_ID, "Dept_ID", "edit", courses[i].departmentId, oldValue, courseId);
                                 break;
                             }
                         }
                         if (!departmentExists) {
-                            printf("Error: Department ID does not exist. Please enter a valid department ID.\n");
+                            printf("Error: Department ID does not exist. Please enter a valid department ID.\n\n");
                             printf("Do you want to continue editing? (y/n): ");
                             char choice;
                             scanf(" %c", &choice);
                             if (choice == 'n' || choice == 'N') {
-                                return; // Return to the previous menu
+                                break; // Return to the previous menu
                             }
-                        } else {
-                            validInput = true;
                         }
-                    } while (!validInput);
-                    addHistoryEntry(User_ID, "course", "edit", courses[i].departmentId, oldValue, courseId);
+                    } while (!departmentExists);
                     break;
 
                 case 3:
                     // Save old value
                     strcpy(oldValue, courses[i].inChargeLecturerId);
-                    bool validinput_1=false;
-                    do {printf("current In Charge Lecturer ID %s \n",oldValue);
-                        printf("Enter new Incharge Lecturer ID: ");
-                        scanf("%s", courses[i].inChargeLecturerId);
+                    char tempinLecId[10]; 
+                    bool LecturerExists = false;
+                    do {
+                        printf("Current in-charge Lecturer ID: %s\n", oldValue);
+                        printf("Enter new in-charge Lecturer ID: ");
+                        scanf("%s", tempinLecId);
 
-                        // Check if department ID exists
-                        bool lecturerexhists = false;
-                        for (int i = 0; i < MAX_LEC; ++i) {
-                            if (strcmp(courses[i].inChargeLecturerId, lecturers[i].id) == 0) {
-                                lecturerexhists = true;
+                        // Check if lecturer ID exists
+                        for (int j = 0; j < MAX_LEC; ++j) {
+                            if (strcmp(tempinLecId, lecturers[j].id) == 0) {
+                                LecturerExists = true;
+                                strcpy(courses[i].inChargeLecturerId, tempinLecId); // Copy temp value to courses array
+                                addHistoryEntry(User_ID, "Incharge_Lec_ID", "edit", courses[i].inChargeLecturerId, oldValue, courseId);
                                 break;
                             }
                         }
-                        if (!lecturerexhists) {
-                            printf("Error: lecturer ID does not exist. Please enter a valid department ID.\n");
+                        if (!LecturerExists) {
+                            printf("Error: Lecturer ID does not exist. Please enter a valid Lecturer ID.\n\n");
                             printf("Do you want to continue editing? (y/n): ");
                             char choice;
                             scanf(" %c", &choice);
                             if (choice == 'n' || choice == 'N') {
-                                return; // Return to the previous menu
+                                break; // Return to the previous menu
                             }
-                        } else {
-                            validInput = true;
                         }
-                    } while (validinput_1);
-
-                    addHistoryEntry(User_ID, "course", "edit", courses[i].inChargeLecturerId, oldValue, courseId);
+                    } while (!LecturerExists);
                     break;
-
-                    
-                default:
-                    printf("Invalid choice.\n");
             }
-            // Update history
-            printf("Course edited successfully.\n");
-            break;
         }
     }
 
@@ -600,7 +588,7 @@ void editCourse(char *User_ID) {
     // Ask for further action
     int furtherAction;
     printf("1. Edit another course\n");
-    printf("2. Main menu\n");
+    printf("2. Main menu\n\n");
     printf("Enter your choice: ");
     scanf("%d", &furtherAction);
 
@@ -608,6 +596,7 @@ void editCourse(char *User_ID) {
         editCourse(User_ID);
     }
 }
+
 
 void deleteCourse(char *User_ID) {
     char courseId[10];
@@ -618,30 +607,40 @@ void deleteCourse(char *User_ID) {
     for (int i = 0; i < numCourses; ++i) {
         if (strcmp(courses[i].id, courseId) == 0 && courses[i].active) {
             found = true;
-            // Set course as inactive
-            courses[i].active = false;
-            // Update history
-            addHistoryEntry(User_ID, "course", "delete", "", courses[i].name, courseId);
-            printf("Course deleted successfully.\n");
+            printf("Do you want to delete %s in %s?\n", courses[i].name, departments[i].Dept_Name);
+            printf("Enter 'y' for yes, 'n' for no: ");
+            char choice;
+            scanf(" %c", &choice);
+
+            if (choice == 'y' || choice == 'Y') {
+                // Set course as inactive
+                courses[i].active = false;
+                // Update history
+                addHistoryEntry(User_ID, "course", "delete", "", courses[i].name, courseId);
+                printf("Course deleted successfully.\n");
+            } else if (choice == 'n' || choice == 'N') {
+                printf("Deletion cancelled.\n");
+            } else {
+                printf("Invalid choice.\n");
+            }
             break;
         }
     }
 
     if (!found) {
         printf("Course not found or already inactive.\n");
+        printf("\n\n");
     }
 
     // Ask for further action
-    int furtherAction;
-    printf("1. Delete another course\n");
-    printf("2. Main menu\n");
-    printf("Enter your choice: ");
-    scanf("%d", &furtherAction);
-
-    if (furtherAction == 1) {
+    char furtherAction;
+    printf("Do you want to delete another course? (Enter 'y' for yes, 'n' for no): ");
+    scanf(" %c", &furtherAction);
+    if (furtherAction == 'y' || furtherAction == 'Y') {
         deleteCourse(User_ID);
     }
 }
+
 
 void addHistoryEntry(const char *userId, const char *entity, const char *action, const char *newValue, const char *oldValue, const char *editedCourseId) {
     if (historyIndexCourse < MAX_HISTORY_ENTRIES) {
