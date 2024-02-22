@@ -134,7 +134,7 @@ void createModule(char *User_ID) {
     }
     if (!validInput) {
         printf("Error: Course ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue (y/n): ");
+        printf("Do you want to continue?\n(y - for yes/n - for no): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -155,7 +155,7 @@ void createModule(char *User_ID) {
     // Check if the module ID has the correct format
     if (!isValidModuleID(newModule.module_id, newModule.course_id)) {
         printf("Error: Module ID should have the format %sXX where XX are two digits.\n", newModule.course_id);
-        printf("Do you want to continue (y/n): ");
+        printf("Do you want to continue?\n(y - for yes/n - for no): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -179,7 +179,7 @@ void createModule(char *User_ID) {
     }
     if (validInput) {
         printf("Error: Module ID already exists. Please enter a different ID.\n");
-        printf("Do you want to continue (y/n): ");
+        printf("Do you want to continue?\n(y - for yes/n - for no): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -212,7 +212,7 @@ void createModule(char *User_ID) {
     }
     if (!validInput) {
         printf("Error: Lecturer ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue (y/n): ");
+        printf("Do you want to continue?\n(y - for yes/n - for no): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -267,7 +267,7 @@ void createModule(char *User_ID) {
 
     if (!found) {
         printf("Module not found or inactive.\n");
-       printf("Do you want to review history(y/n):");
+       printf("Do you want to review history?\n(y - for yes/n - for no): ");
                 char choice_1;
                  scanf(" %c", &choice_1);
                  if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -322,7 +322,7 @@ void readModule() {
                 }
                 // If lecture is deleted
                 else if (get_lecture(i) == 0) {
-                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description,"N/A");
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[i].course_id, modules[i].module_name, modules[i].module_description,"N/A");
                 }
                 // If course is deleted
                 else if (get_course(i) == 0) {
@@ -330,7 +330,7 @@ void readModule() {
                 }
                 // If both lecture and course are available
                 else {
-                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[i].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
                 }
             }
         }
@@ -382,7 +382,7 @@ void editModule(char *User_ID) {
     // If module ID doesn't exist, prompt user to continue or not
     if (!validInput) {
         printf("Error: Module ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue (y/n): ");
+        printf("Do you want to continue?\n(y - for yes/n - for no): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
@@ -449,7 +449,7 @@ void editModule(char *User_ID) {
                         }
                         if (!validInput) {
                             printf("Error: Lecturer ID does not exist. Please enter a valid ID.\n");
-                            printf("Do you want to continue (y/n): ");
+                            printf("Do you want to continue?\n(y - for yes/n - for no): ");
                             char choice_1;
                             scanf(" %c", &choice_1);
                             if (choice_1 == 'y' || choice_1 == 'Y') {
