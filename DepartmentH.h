@@ -52,8 +52,13 @@ void Department_main(char *User_ID)
         printf("2. View Department\n");
         printf("3. Update Department\n");
         printf("4. Delete Department\n");
+<<<<<<< HEAD
+        printf("5. Delete History\n");
+        printf("6. Exit\n");
+=======
         printf("5. View History\n");
         printf("6. Exit\n\n");
+>>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
         printf("\nEnter your choice : ");
         scanf("%d", &choice);
         getchar();
@@ -65,7 +70,7 @@ void Department_main(char *User_ID)
             add_department();
             break;
         case 2:
-            printf("\nView Department:\n\n");
+            printf("\nView Department:\n");
             do {
                 printf("\n1. View all departments\n");
                 printf("2. View specific department details\n");
@@ -129,7 +134,7 @@ void add_department()
 
     do
     {
-        printf("Department ID example : Engineering - \"EN\". (Letters should be Capitalized)\n");
+        printf("\nDepartment ID example : Engineering - \"EN\". (Letters should be Capitalized)\n");
         printf("Enter Department ID : ");
         scanf("%s", new_department.Dept_ID);
     } while (dept_id_valid(new_department.Dept_ID) != 0);
@@ -180,7 +185,7 @@ void add_department()
 
     departments[add_dept_count++] = new_department;
 
-    printf("\nDepartment added successfully.\n");
+    printf("\nDepartment added successfully.\n\n");
 
     char choice;
     printf("Do you want to add another department? (y/n): ");
@@ -220,6 +225,8 @@ void display_department()
     }
 
     printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
+<<<<<<< HEAD
+=======
 
     char choice;
     printf("Do you want to view another department? (y/n): ");
@@ -227,6 +234,7 @@ void display_department()
     if (choice == 'y' || choice == 'Y') {
         display_department();
     }
+>>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
 }
 
 //function to display courses and modules under courses

@@ -78,7 +78,7 @@ void addFunctions(int n, char *User_ID){
     switch (n)
     {
     case 1:
-        // add_department();
+        add_department();
         printf("\nDo you want to add courses for the department?\n(y - for yes/n - for no): ");
         int choice = checkYesNo();
         if(choice == 1){
