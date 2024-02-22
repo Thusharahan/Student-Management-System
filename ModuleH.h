@@ -81,8 +81,9 @@ void Module_main(char *User_ID) {
                 return;
             default:
                 printf("Invalid choice. Please enter a number between 1 and 6:\n");
+                break;
         }
-    } while(choice != 6);
+    } while(1);
 }
 
 // Function to check if the ID has the correct format
@@ -138,7 +139,8 @@ void createModule(char *User_ID) {
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
-            createCourse();
+            // createCourse(User_ID);
+            printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
             getchar();
             goto input_courseid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
@@ -178,7 +180,7 @@ void createModule(char *User_ID) {
     // Check if the module ID already exists
     validInput = false; // Reset validInput flag before checking
     for (int i = 0; i < numModules; ++i) {
-        if (strcmp(newModule.module_id, modules[i].module_id) == 0) {
+        if (strcmp(newModule.module_id, modules[i].module_id) == 0 && courses[i].active) {
             validInput = true;
             break;
         }
@@ -224,7 +226,8 @@ void createModule(char *User_ID) {
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
             getchar();
-            createLecturer();
+            // createLecturer(User_ID);
+            printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
             goto input_lecturerid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
@@ -262,7 +265,7 @@ void createModule(char *User_ID) {
      
     bool found = false;
     for (int i = 0; i < numModules; ++i) {
-        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active &&courses[i].active) {
+        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active && courses[i].active) {
             found = true;
             printf("Module ID: %s\n", modules[i].module_id);
             printf("Module Name: %s\n", modules[i].module_name);
@@ -398,7 +401,7 @@ void editModule(char *User_ID) {
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
-             createModule();
+             createModule(User_ID);
              getchar();
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return; // Return to main menu
@@ -471,7 +474,8 @@ void editModule(char *User_ID) {
                             scanf(" %c", &choice_1);
                             if (choice_1 == 'y' || choice_1 == 'Y') {
                                 getchar();
-                                createLecturer();
+                                // createLecturer(User_ID);
+                                printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                                 goto input_lecturerid;
                             } else if (choice_1 == 'n' || choice_1 == 'N') {
                                 return;
@@ -526,7 +530,7 @@ void deleteModule(char *User_ID) {
         }
         } else{
            printf("Actions revoked...\n");
-           deleteModule();
+           deleteModule(User_ID);
         }
     }
 
