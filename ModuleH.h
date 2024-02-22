@@ -250,13 +250,8 @@ void createModule(char *User_ID) {
      
     bool found = false;
     for (int i = 0; i < numModules; ++i) {
-        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active) {
+        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active &&courses[i].active) {
             found = true;
-            for (int j = 0; j < MAX_CORS; ++j) {
-                if (strcmp(courses[j].id, modules[i].course_id) == 0 && courses[j].active) {
-                    printf("\nCourse ID: %s\n", courses[j].id);
-                }
-            }
             printf("Module ID: %s\n", modules[i].module_id);
             printf("Module Name: %s\n", modules[i].module_name);
             printf("Module Description: %s\n", modules[i].module_description);
@@ -314,7 +309,7 @@ void readModule() {
         search_modules(readModule);; // Call search_modules function
     } else if (option == 2){
         printf("-------------------------------------------------------------------------------------------------------------------------------------------------\n");
-        printf("| %-12s | %-15s | %-40s | %-50s | %-15s |\n", "Module ID", "Course ID", "Module Name", "Description", "Lecturer Name");
+        printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", "Module ID", "Course ID", "Module Name", "Description", "Lecturer Name");
         printf("-------------------------------------------------------------------------------------------------------------------------------------------------\n");
         for (int i = 0; i < numModules; ++i) {
             if (modules[i].active) {
@@ -323,19 +318,19 @@ void readModule() {
 
                 // If both lecture and course are deleted
                 if (get_lecture(i) == 0 && get_course(i) == 0) {
-                    printf("| %-12s | N/A | %-40s | %-50s | N/A |\n", modules[i].module_id, modules[i].module_name, modules[i].module_description);
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, "N/A" , modules[i].module_name, modules[i].module_description,"N/A") ;
                 }
                 // If lecture is deleted
                 else if (get_lecture(i) == 0) {
-                    printf("| %-12s | %-15s | %-40s | %-50s | N/A |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description);
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description,"N/A");
                 }
                 // If course is deleted
                 else if (get_course(i) == 0) {
-                    printf("| %-12s | N/A | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id,"N/A", modules[i].module_name, modules[i].module_description, lecturers[lec].name);
                 }
                 // If both lecture and course are available
                 else {
-                    printf("| %-12s | %-15s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                    printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
                 }
             }
         }
