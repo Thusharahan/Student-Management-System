@@ -52,13 +52,8 @@ void Department_main(char *User_ID)
         printf("2. View Department\n");
         printf("3. Update Department\n");
         printf("4. Delete Department\n");
-<<<<<<< HEAD
-        printf("5. Delete History\n");
-        printf("6. Exit\n");
-=======
         printf("5. View History\n");
         printf("6. Exit\n\n");
->>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
         printf("\nEnter your choice : ");
         scanf("%d", &choice);
         getchar();
@@ -225,16 +220,6 @@ void display_department()
     }
 
     printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
-<<<<<<< HEAD
-=======
-
-    char choice;
-    printf("Do you want to view another department? (y/n): ");
-    scanf(" %c", &choice);
-    if (choice == 'y' || choice == 'Y') {
-        display_department();
-    }
->>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
 }
 
 //function to display courses and modules under courses
