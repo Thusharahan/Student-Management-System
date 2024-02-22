@@ -87,7 +87,7 @@ int main(){
         printf("Available fields of student management system.\n\n");
         printf("1. Department\n2. Courses\n3. Modules\n4. Lectures\n5. Students \n6. Exit\n");
         printf("Choose any fields you want to work with: ");
-        choice = getInput(MainMenu ,5);
+        choice = getInput(MainMenu ,6);
 
         switch(choice){
             case 1:
