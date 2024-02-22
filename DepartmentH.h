@@ -52,13 +52,8 @@ void Department_main(char *User_ID)
         printf("2. View Department\n");
         printf("3. Update Department\n");
         printf("4. Delete Department\n");
-<<<<<<< HEAD
-        printf("5. Delete History\n");
-        printf("6. Exit\n");
-=======
         printf("5. View History\n");
-        printf("6. Exit\n\n");
->>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
+        printf("6. Exit\n");
         printf("\nEnter your choice : ");
         scanf("%d", &choice);
         getchar();
@@ -130,6 +125,7 @@ void Department_main(char *User_ID)
 //create department
 void add_department()
 {
+    int found = 0;
     Department new_department;
 
     do
@@ -137,7 +133,22 @@ void add_department()
         printf("\nDepartment ID example : Engineering - \"EN\". (Letters should be Capitalized)\n");
         printf("Enter Department ID : ");
         scanf("%s", new_department.Dept_ID);
-    } while (dept_id_valid(new_department.Dept_ID) != 0);
+        getchar();
+
+        for(int x = 0; x < MAX_DEPT; x++)
+        {
+            if(strcmp(departments[x].Dept_ID, new_department.Dept_ID) == 0)
+            {
+                printf("\nDepartment ID Already Exists.\n\n");
+                found = 1;
+                break;
+            }
+            else
+            {
+                found = 0;
+            }
+        }
+    } while (dept_id_valid(new_department.Dept_ID) != 0 || found == 1);
 
     do
     {
@@ -190,6 +201,7 @@ void add_department()
     char choice;
     printf("Do you want to add another department? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
         add_department();
     }
@@ -225,27 +237,19 @@ void display_department()
     }
 
     printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
-<<<<<<< HEAD
-=======
-
-    char choice;
-    printf("Do you want to view another department? (y/n): ");
-    scanf(" %c", &choice);
-    if (choice == 'y' || choice == 'Y') {
-        display_department();
-    }
->>>>>>> 8df3afb87eff17a1e85d479580f5da6b4664757d
 }
 
 //function to display courses and modules under courses
 void display_course()
 {
+    int found = 0;
     char department_ID[MAX_ID_LEN];
 
     available_department();
 
     printf("Enter Department to view course details : ");
     scanf("%s", department_ID);
+    getchar();
 
     int dept_av = 0;
 
@@ -289,12 +293,19 @@ void display_course()
                     printf("\t%-5s : %-30s\n", modules[x].module_id, modules[x].module_name);
                 }
             }
+            found = 1;
         }
+    }
+
+    if(!found)
+    {
+        printf("\nNo courses added yet\n\n");
     }
 
     char choice;
     printf("Do you want to view another course? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
         display_course();
     }
@@ -303,13 +314,14 @@ void display_course()
 //function to view lecturers
 void display_lecturers()
 {
+    int found = 0;
     char department_ID[MAX_ID_LEN];
 
     available_department();
 
     printf("Enter Department to view course details : ");
     scanf("%s", department_ID);
-
+    getchar();
     int dept_av = 0;
 
     for(int i = 0; i < MAX_DEPT; i++)
@@ -345,12 +357,19 @@ void display_lecturers()
         if(strcmp(department_ID, lecturers[r].department_id) == 0 && lecturers[r].active)
         {
             printf("\t%-5s : %-20s\n", lecturers[r].id, lecturers[r].name);
+            found = 1;
         }
+    }
+
+    if(!found)
+    {
+        printf("\nNo Lecturers added yet.\n\n");
     }
 
     char choice;
     printf("Do you want to view another department's lecturers? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
         display_lecturers();
     }
@@ -360,6 +379,7 @@ void display_specific_department()
 {
     char department_ID[MAX_ID_LEN];
     char Lecturer_Name[MAX_NAME_LEN];
+    int found = 0;
 
     available_department();
 
@@ -367,6 +387,7 @@ void display_specific_department()
     {
         printf("Enter Department ID to view details: ");
         scanf("%s", department_ID);
+        getchar();
     } while (dept_id_valid(department_ID) != 0);
     
     for(int i = 0; i < MAX_DEPT; i++)
@@ -392,12 +413,20 @@ void display_specific_department()
             printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
             printf("| %-15s | %-40s | %-30s | %-20d | %-20d |\n", departments[i].Dept_ID, departments[i].Dept_Name, Lecturer_Name, find_no_students(departments[i].Dept_ID), find_no_lecturers(departments[i].Dept_ID));
             printf("---------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+            found = 1;
+            break;
         }
+    }
+    if(!found)
+    {
+        printf("\nDepartment Not Avaiable\n\n");
     }
 
     char choice;
     printf("Do you want to view another department? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
         display_specific_department();
     }
@@ -411,7 +440,6 @@ void update_department() {
     available_department();
 
     printf("\nEnter Department ID to update : ");
-    getchar();
     fgets(department_ID, sizeof(department_ID), stdin);
     department_ID[strcspn(department_ID, "\n")] = '\0';
 
@@ -459,6 +487,7 @@ void update_department() {
     char choice;
     printf("Do you want to update another department? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
         update_department();
     }
@@ -473,6 +502,7 @@ void delete_department(char *User_ID)
 
     printf("Enter Department ID to delete : ");
     scanf("%s", department_ID);
+    getchar();
 
     for(int i = 0; i < MAX_DEPT; i++)
     {
@@ -519,6 +549,7 @@ void delete_department(char *User_ID)
     char choice;
     printf("Do you want to delete another department? (y/n): ");
     scanf(" %c", &choice);
+    getchar();
     if (choice == 'y' || choice == 'Y') {
     delete_department(User_ID);
         }
@@ -682,11 +713,13 @@ void available_department()
 //viewing students
 void view_std()
 {
+    int found = 0;
     char dept_id[MAX_ID_LEN];
     available_department();
 
     printf("Enter Department ID : ");
     scanf("%s", dept_id);
+    getchar();
 
     for(int i = 0; i < MAX_DEPT; i++)
     {
@@ -700,9 +733,15 @@ void view_std()
                 if(strcmp(dept_id, students[r].Std_Department) == 0 && students[r].Std_Visible)
                 {
                     printf("\t%-5s      -    %-30s      -    %-15s      -    %-15s\n", students[r].Std_ID, students[r].Std_Name, students[r].Std_Course, students[r].Std_ContactNo);
+                    found = 1;
                 }
             }
         }
+    }
+
+    if(!found)
+    {
+        printf("\nStudents Not Added yet.\n\n");
     }
 }
 

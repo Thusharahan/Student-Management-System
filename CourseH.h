@@ -159,11 +159,11 @@ void createCourse(char *User_ID) {
     do {
         bool departmentExists = false;
         printf("\nAvailable departments are:\n");
-        int k = sizeof(departments->Dept_ID) / sizeof(departments[0].Dept_ID);
         
-for (int i = 0; i < k+1; ++i) {
-    // Check if the department name is not empty
-     {
+        
+for (int i = 0; i < MAX_DEPT; ++i) {
+    if(departments[i].active)
+    {
         printf("For %s type '%s'\n", departments[i].Dept_Name, departments[i].Dept_ID);
     }
 }
@@ -173,7 +173,7 @@ for (int i = 0; i < k+1; ++i) {
         if(isValidDeptID(newCourse.departmentId))
           {goto label_2;}
           else {printf("\nInput is invalid....!\n\n");
-          printf("Do you want to contnue?\n(y - for yes/n - for no): :");
+          printf("Do you want to contnue?\n(y - for yes/n - for no): ");
                  char choice_1;
                  scanf(" %c", &choice_1);
                  if (choice_1 == 'y' || choice_1 == 'Y') 
@@ -193,6 +193,19 @@ for (int i = 0; i < k+1; ++i) {
         }
         if (!departmentExists) {
             printf("\nDepartment ID does not exist...! Please enter a valid department ID.\n\n");
+            printf("Do you want to create an new department?\n(y - for yes/n - for no): ");
+            char choice_3;
+                 scanf(" %c", &choice_3);
+                 if (choice_3== 'y' || choice_3 == 'Y') 
+                  {printf("The function is not implemented yet\n");}
+                 else if(choice_3 == 'n' || choice_3 == 'N') 
+                 {printf("Do you want to continue?\n(y - for yes/n - for no): ");
+                 char choice_2;
+                 scanf(" %c", &choice_2);
+                 if (choice_2 == 'y' || choice_2 == 'Y') 
+                  {goto  input_departmentId;}
+                 else if(choice_2 == 'n' || choice_2 == 'N') 
+                 {return;}}
             printf("Do you want to continue?\n(y - for yes/n - for no): ");
                  char choice_1;
                  scanf(" %c", &choice_1);
