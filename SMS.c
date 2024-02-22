@@ -1,16 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <time.h>
-#include <ctype.h>
-#include "input.h"
-#include "Data_Base.h"
-#include "StudentH.h"
-#include "ModuleH.h"
-#include "DepartmentH.h"
-#include "CourseH.h"
-#include "LectureH.h"
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <stdbool.h>
+// #include <string.h>
+// #include <time.h>
+// #include <ctype.h>
+#include "SpecialFunct.h"
+// #include "Data_Base.h"
+// #include "StudentH.h"
+// #include "ModuleH.h"
+// #include "DepartmentH.h"
+// // #include "CourseH.h"
+// #include "LectureH.h"
 
 #define MAX_LENGTH 50
 #define MAX_USERS 5

@@ -33,10 +33,10 @@ int num_history = 0;
 History histories[50];
 
 
-void add_student();
+void add_student(char *USER_ID);
 void display_students();
 void search_student();
-void delete_student();
+void delete_student(char *USER_ID);
 void store_history(char *user, char *action, char *id, char *field, char *old_value, char *new_value);
 void display_history();
 int getCourse(int n);
@@ -114,7 +114,7 @@ int checkYesNo() {
 }
 
 //This function is used to create the list of students in the initial.
-void add_student() {
+void add_student(char *USER_ID) {
     char St_Name[35], St_ID[6], St_ContactNo[14], St_Email[35], St_EnrolledYear[5], St_Department[3], St_Course[6];
     if (num_students < MAX_STUDENTS) {
         printf("\nEnter Student Details:\n");
@@ -153,18 +153,72 @@ void add_student() {
             }
         }
 
+        while(1){
+            int count = 1;
+            for (int i = 0; i < MAX_DEPT; i++){
+                if (departments[i].active){
+                    count++;
+                }
+            }
+            if (count == 1) {
+                printf("There is no departments avilable or they have been deleted.\n");
+                printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                int depchoise = checkYesNo();
+                if (depchoise == 1) {
+                    // view_department();
+                } 
+                printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                depchoise = checkYesNo();
+                if (depchoise == 1) {
+                    addFunctions(1, USER_ID);
+                }else{
+                    printf("\nAdding students was incomplete!!\n");
+                    return;
+                }
+            } else{
+                break;
+            }
+        }
+
         printf("\nSelect one department from following:\n");
         printf("Available departments: \n");
         // char department[MAX_DEPT][MAX_NAME_LEN];
         int num = 0;
         for (int i = 0; i < MAX_DEPT; i++){
-            if (strlen(departments[i].Dept_ID) > 0 && strlen(departments[i].Dept_Name) > 0) {
+            if (departments[i].active) {
                 num++;
                 printf("%d. %s | ID - [%s]\n", num, departments[i].Dept_Name, departments[i].Dept_ID);
             }
         }
         printf("\nEnter the department ID: ");
         scanf("%s", &St_Department);
+
+        while (1){
+            int count1 = 1;
+            for (int i = 0; i < MAX_DEPT; i++){
+                if (strcmp(courses[i].departmentId, St_Department) == 0){
+                    count1++;
+                }
+            }
+            if (count1 == 1) {
+                printf("There is no modules avilable under the selected department or they have been deleted.\n");
+                printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                int depchoise1 = checkYesNo();
+                if (depchoise1 == 1) {
+                    // view_department();
+                } 
+                printf("Do you want to add any modules?\n(y - for yes/n - for no): ");
+                depchoise1 = checkYesNo();
+                if (depchoise1 == 1) {
+                    addFunctions(2, USER_ID);
+                }else{
+                    printf("\nAdding students was incomplete!!\n");
+                    return;
+                }
+            } else {
+                break;
+            }
+        }
 
         printf("\nAvailable courses under selected department:\n");
         num = 0;
@@ -627,13 +681,13 @@ void Student_main (char *USER_ID){
 
         switch (choicenum) {
             case 1:
-                add_student();
+                add_student(USER_ID);
                 while (true)
                 {
                     printf("\nDo you want to continue adding students? \n(y - for yes/n - for no): ");
                     int yesno = checkYesNo();
                     if (yesno == 1){
-                        add_student();
+                        add_student(USER_ID);
                         continue;
                     } else if(yesno == 2){
                         break;
