@@ -1,16 +1,16 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <stdbool.h>
-// #include <string.h>
-// #include <time.h>
-// #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
 #include "SpecialFunct.h"
-// #include "Data_Base.h"
-// #include "StudentH.h"
-// #include "ModuleH.h"
-// #include "DepartmentH.h"
-// // #include "CourseH.h"
-// #include "LectureH.h"
+#include "Data_Base.h"
+#include "StudentH.h"
+#include "ModuleH.h"
+#include "DepartmentH.h"
+#include "CourseH.h"
+#include "LectureH.h"
 
 #define MAX_LENGTH 50
 #define MAX_USERS 5
@@ -52,37 +52,34 @@ int main(){
         "Exit"
     };
 
-    char userID[MAX_LENGTH];
+    char userID[] = "Admin";
+    // char userID[MAX_LENGTH];
     char password[MAX_LENGTH];
 
-    while (1)
-    {
-        printf("---------------------------------------------------------------\n");
-        printf("           \033[1mWELCOME TO STUDENTS MANAGEMENT SYSTEM!\033[0m\n");
-        printf("---------------------------------------------------------------\n\n");
+    // while (1)
+    // {
+    //     printf("---------------------------------------------------------------\n");
+    //     printf("           \033[1mWELCOME TO STUDENTS MANAGEMENT SYSTEM!\033[0m\n");
+    //     printf("---------------------------------------------------------------\n\n");
 
-        printf("Enter your user ID: ");
-        scanf("%s", userID);
+    //     printf("Enter your user ID: ");
+    //     scanf("%s", userID);
 
-        printf("Enter your password: ");
-        scanf("%s", password);
+    //     printf("Enter your password: ");
+    //     scanf("%s", password);
 
-        // Check if the entered user ID and password are valid
-        if (validateCredentials(userID, password)) {
-            printf("Welcome, %s! You have successfully logged in.\n\n", userID);
-            // const char USER_ID[] = userID;
-            break;
-            // Place your program logic here after successful login
-        } else {
-            printf("Invalid user ID or password. Access denied.\n");
-        }   
+    //     // Check if the entered user ID and password are valid
+    //     if (validateCredentials(userID, password)) {
+    //         printf("Welcome, %s! You have successfully logged in.\n\n", userID);
+    //         // const char USER_ID[] = userID;
+    //         break;
+    //         // Place your program logic here after successful login
+    //     } else {
+    //         printf("Invalid user ID or password. Access denied.\n");
+    //     }   
         
-    }
-    
-    
+    // }
 
-    
-    
     while(1){
         printf("---------------------------------------------------------------\n");
         printf("                 \033[1mSTUDENT MANAGEMENT SYSTEM\033[0m\n");
@@ -90,7 +87,7 @@ int main(){
         printf("Available fields of student management system.\n\n");
         printf("1. Department\n2. Courses\n3. Modules\n4. Lectures\n5. Students \n6. Exit\n");
         printf("Choose any fields you want to work with: ");
-        choice = getInput(MainMenu ,5);
+        choice = getInput(MainMenu ,6);
 
         switch(choice){
             case 1:
