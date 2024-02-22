@@ -114,7 +114,7 @@ void Course_main(char *User_ID) {
         printf("4. Delete Course\n");
         printf("5. Review History\n");
         printf("6. Exit\n");
-        printf("\n   Enter your choice: ");
+        printf("\nEnter your choice: ");
         scanf("%d", &choice);
         getchar();
 
@@ -158,7 +158,7 @@ void createCourse(char *User_ID) {
     input_departmentId:
     do {
         bool departmentExists = false;
-        printf("\nAvailable departments are:\n ");
+        printf("\nAvailable departments are:\n");
         int k = sizeof(departments->Dept_ID) / sizeof(departments[0].Dept_ID);
         
 for (int i = 0; i < k+1; ++i) {
