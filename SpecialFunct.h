@@ -1,6 +1,19 @@
+// #include <stdio.h>
+// #include <string.h>
+// #include <ctype.h> // For tolower()
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
-#include <ctype.h> // For tolower()
+#include <time.h>
+#include <ctype.h>
+// #include "SpecialFunct.h"
+#include "Data_Base.h"
+#include "StudentH.h"
+#include "ModuleH.h"
+#include "DepartmentH.h"
+#include "CourseH.h"
+#include "LectureH.h"
 
 #define MAX_WORDS 100
 #define MAX_WORD_LENGTH 100
@@ -12,6 +25,8 @@ void strToLower(char *str) {
         str++;
     }
 }
+
+// int checkYesNO();
 
 int getInput(char *words[], int numWords) {
     char input[MAX_WORD_LENGTH];
@@ -28,15 +43,9 @@ int getInput(char *words[], int numWords) {
             // Output the integer
             int num;
             sscanf(input, "%d", &num);
-            // printf("Input is an integer: %d\n", num);
             while(getchar() != '\n');
             return num;
         }
-        // if (isdigit(input[0]) && input[1] == '.') {
-        //     int num;
-        //     sscanf(input, "%d", &num);
-        //     return num;
-        // }
     }
 
     // Convert input string to lowercase
@@ -58,13 +67,39 @@ int getInput(char *words[], int numWords) {
     if (foundIndex == -1) {
         while(getchar() != '\n');
         return -1;
-        // printf("No matches found for the substring '%s'\n", input);
     } else {
         while(getchar() != '\n');
         return foundIndex+1;
-        // printf("Substring '%s' found at index %d: %s\n", input, foundIndex, words[foundIndex]);
     }
     
+}
 
-    // return 0;
+void addFunctions(int n, char *User_ID){
+    switch (n)
+    {
+    case 1:
+        // add_department();
+        printf("\nDo you want to add courses for the department?\n(y - for yes/n - for no): ");
+        int choice = checkYesNo();
+        if(choice == 1){
+            addFunctions(2, User_ID);
+        } else{
+            break;
+        }
+    case 2:
+        createCourse(User_ID);
+        printf("\nDo you want to create modules for the course?\n(y - for yes/n - for no): ");
+        int choice1 = checkYesNo();
+        if(choice1 == 1){
+            addFunctions(3, User_ID);
+        } else{
+            break;
+        }
+    case 3:
+        createModule(User_ID);
+        break;
+
+    default:
+        break;
+    }
 }
