@@ -196,7 +196,7 @@ void createModule(char *User_ID) {
     printf("Enter module name: ");
     scanf("%49s", newModule.module_name);
     printf("Enter module description: ");
-    scanf("%99s", newModule.module_description);
+    scanf("%s", newModule.module_description);
 
     input_lecturerid:
     printf("Enter lecturer ID (eg: L_001): ");
@@ -250,7 +250,7 @@ void createModule(char *User_ID) {
      
     bool found = false;
     for (int i = 0; i < numModules; ++i) {
-        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active &&courses[i].active) {
+        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active && courses[i].active) {
             found = true;
             printf("Module ID: %s\n", modules[i].module_id);
             printf("Module Name: %s\n", modules[i].module_name);
@@ -321,11 +321,11 @@ void readModule() {
                     printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, "N/A" , modules[i].module_name, modules[i].module_description,"N/A") ;
                 }
                 // If lecture is deleted
-                else if (get_lecture(i) == 0) {
+                else if (get_lecture(i) == 0 && get_course(i) != 0) {
                     printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description,"N/A");
                 }
                 // If course is deleted
-                else if (get_course(i) == 0) {
+                else if (get_course(i) == 0 && get_course(i) == 0) {
                     printf("| %-12s | %-12s | %-40s | %-50s | %-15s |\n", modules[i].module_id,"N/A", modules[i].module_name, modules[i].module_description, lecturers[lec].name);
                 }
                 // If both lecture and course are available
