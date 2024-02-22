@@ -350,7 +350,7 @@ void search_student() {
         printf("\nEnter the student ID you want to search for: ");
         char St_ID[6];
         while(1){
-            scanf("%5s", St_ID);
+            scanf("%s", St_ID);
             if (!isValidID(St_ID)) {
                 printf("\nInvalid ID format! Please enter a valid student ID: ");
                 continue;

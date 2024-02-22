@@ -39,8 +39,9 @@ void view_student(char lec_id[MAX_NAME_LEN]);
 void Lecture_main(char *User_ID) {
     int choice;
     do {
-        printf("\nWelcome to the Student Management System - Section of Lecturer\n");
-        printf("Choices of Operations\n");
+        printf("\n--------------------------------------------\n");
+        printf("      STUDENT MANAGEMENT SYSTEM - LECTURE       ");
+        printf("\n--------------------------------------------\n");
         printf("1. Add Lecturer\n");
         printf("2. View Lecturer Details\n");
         printf("3. Update Lecturer Details\n");

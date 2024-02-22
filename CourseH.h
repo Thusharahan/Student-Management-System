@@ -422,7 +422,7 @@ void readAllCourses(void (*previousMenu)()) {
                 printf("Department name: %s\n", departments[j].Dept_Name);
                 break;}
                 else if(strcmp(courses[i].departmentId,departments[j].Dept_ID)==0 && !departments[i].active) {
-                printf("Department name: Not Available/n ");
+                printf("Department name: Not Available\n ");
                 break;}
             }
             
