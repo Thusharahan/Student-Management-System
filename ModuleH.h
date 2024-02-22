@@ -4,7 +4,7 @@
 // #include <ctype.h>
 // #include <time.h>
 // #include "Data_Base.h"
-// hi
+
 
 #define MAX_HISTORY_ENTRIES 100
 
@@ -38,7 +38,7 @@ void editModule(char *User_ID);
 void deleteModule(char *User_ID);
 void addModuleHistoryEntry(const char *userId, const char *entity, const char *action, const char *newValue, const char *oldValue, const char *editedCourseId);
 void reviewHistoryModule();
-int search_modules(char keyword[]);
+void search_modules();
 void to_lowercase(char *str);
 int get_lecture(int n);
 
@@ -231,7 +231,7 @@ void createModule(char *User_ID) {
 
     addModuleHistoryEntry(User_ID, "module", "create", newModule.module_name, "", newModule.module_id);
 
-    printf("Module created successfully.\n");
+    printf("Module created successfully.\n\n");
 
     int furtherAction;
     printf("1. Add another module\n");
@@ -245,43 +245,52 @@ void createModule(char *User_ID) {
 }
 
 // Define the search_modules function outside of readModule
-int search_modules(char keyword[]) {
-    // Define a variable to store the number of modules found
-    int found = 0;
-
-    // Convert the keyword to lowercase
-    to_lowercase(keyword);
-
-    // Iterate over the modules
-    for (int i = 0; i < numModules; i++) {
-        // Convert the module name to lowercase
-        char lowercase_name[MAX_NAME_LEN];
-        strncpy(lowercase_name, modules[i].module_name, sizeof(lowercase_name) - 1);
-        lowercase_name[sizeof(lowercase_name) - 1] = '\0'; // Ensure null-terminated
-        to_lowercase(lowercase_name);
-
-        // Check if the keyword is present in the lowercase module name
-        if (strstr(lowercase_name, keyword) != NULL) {
-            // Print module details
-            printf("Module ID: %s\n", modules[i].module_id);
-            printf("Course ID: %s\n", modules[i].course_id);
+void search_modules() {
+    char moduleid[10];
+    printf("Enter the Module ID (eg : EN_0101) : ");
+    scanf("%s", moduleid);
+     
+    bool found = false;
+    for (int i = 0; i < numModules; ++i) {
+        if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active) {
+            found = true;
             printf("Module Name: %s\n", modules[i].module_name);
-            printf("Description: %s\n", modules[i].module_description);
-            printf("Lecturer Name: %s\n", lecturers[i].name);
+            printf("Module ID: %s\n", modules[i].module_id);
+            printf("Module Description: %s\n", modules[i].module_description);
+           for (int j = 0; j < MAX_LEC; ++j) {
+                if (strcmp(lecturers[j].id, modules[i].lecturer_id) == 0 && lecturers[j].active) {
+                    printf("Assigned lecturer Name: %s\n", lecturers[j].name);
+                }
+            }
             printf("\n");
-
-            // Increment the count of found modules
-            found++;
+            break;
         }
     }
 
-    // If no modules are found, print a message
-    if (found == 0) {
-        printf("No modules found matching the keyword.\n");
+    if (!found) {
+        printf("Module not found or inactive.\n");
+       printf("Do you want to review history(y/n):");
+                char choice_1;
+                 scanf(" %c", &choice_1);
+                 if (choice_1 == 'y' || choice_1 == 'Y') {
+                  reviewHistoryModule();
+                  }
+                 else if(choice_1 == 'n' || choice_1 == 'N') 
+                 {return;}
     }
 
-    // Return the number of modules found
-    return found;
+    int option2;
+    printf("Choose an option:\n");
+    printf("1. View another Module\n");
+    printf("2. Return to menu\n\n");
+    printf("Enter your choice number: ");
+    scanf("%d", &option2);
+    if (option2 == 2) {
+        // Return to the previous menu
+        return;
+    } else if (option2 == 1) {
+        search_modules(); // Call the function recursively
+    }
 }
 
 // Modify readModule function to call search_modules if option 2 is chosen
@@ -299,10 +308,7 @@ void readModule() {
     if (option == 3) {
         return;
     } else if (option == 1) {
-        char keyword[MAX_NAME_LEN];
-        printf("Enter the keyword to search for: ");
-        scanf("%s", keyword);
-        search_modules(keyword); // Call search_modules function
+        search_modules(readModule);; // Call search_modules function
     } else if (option == 2){
         printf("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
         printf("| %-12s | %-12s | %-40s | %-50s | %-20s |\n", "Module ID", "Course ID", "Module Name", "Description", "Lecturer Name");
