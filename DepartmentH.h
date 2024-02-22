@@ -502,7 +502,7 @@ void delete_department(char *User_ID)
 
     printf("Enter Department ID to delete : ");
     scanf("%s", department_ID);
-    getchar();
+    // getchar();
 
     for(int i = 0; i < MAX_DEPT; i++)
     {
