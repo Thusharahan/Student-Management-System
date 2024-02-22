@@ -114,7 +114,7 @@ void Course_main(char *User_ID) {
         printf("4. Delete Course\n");
         printf("5. Review History\n");
         printf("6. Exit\n");
-        printf("\n   Enter your choice: ");
+        printf("\nEnter your choice: ");
         scanf("%d", &choice);
         getchar();
 
@@ -158,7 +158,7 @@ void createCourse(char *User_ID) {
     input_departmentId:
     do {
         bool departmentExists = false;
-        printf("\nAvailable departments are:\n ");
+        printf("\nAvailable departments are:\n");
         int k = sizeof(departments->Dept_ID) / sizeof(departments[0].Dept_ID);
         
 for (int i = 0; i < k+1; ++i) {
@@ -414,10 +414,10 @@ void readAllCourses(void (*previousMenu)()) {
             }
             
             for(int j=0;j<MAX_LEC;++j){
-               if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id==0 && lecturers[i].active)) {
+               if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id)==0 && lecturers[j].active) {
                 printf("In-Charge lecturer name: %s\n", lecturers[j].name);
                 break;}
-                if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id==0 && !lecturers[i].active)) {
+                if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id)==0 && !lecturers[j].active) {
                 printf("In-Charge lecturer name: Not available \n ");
                 break;}
             }
@@ -430,7 +430,7 @@ void readAllCourses(void (*previousMenu)()) {
                     printf("| %-15s | %-30s |\n", modules[j].module_id, modules[j].module_name);
                 }
             }
-            printf("-------------------------------------------------------------\n");
+            printf("-----------------------------------------------------\n");
         }
     }
 

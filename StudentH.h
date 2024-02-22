@@ -165,14 +165,14 @@ void add_student(char *USER_ID) {
                 printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                 int depchoise = checkYesNo();
                 if (depchoise == 1) {
-                    // view_department();
-                    printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    view_delete();
+                    // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                 } 
                 printf("Do you want to add any department?\n(y - for yes/n - for no): ");
                 depchoise = checkYesNo();
                 if (depchoise == 1) {
-                    // addFunctions(1, USER_ID);
-                    printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    addFunctions(1, USER_ID);
+                    // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                 }else{
                     printf("\nAdding students was incomplete!!\n");
                     return;
@@ -222,8 +222,8 @@ void add_student(char *USER_ID) {
                 printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                 int depchoise1 = checkYesNo();
                 if (depchoise1 == 1) {
-                    // view_department();
-                    printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    reviewHistory();
+                    // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                 } 
                 printf("Do you want to add any courses?\n(y - for yes/n - for no): ");
                 depchoise1 = checkYesNo();
@@ -675,13 +675,13 @@ void edit_student(char *USER_ID) {
                         printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                         int depchoise = checkYesNo();
                         if (depchoise == 1) {
-                            // view_department();
-                            printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                            view_delete();
+                            // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                         } 
                         printf("Do you want to add any department?\n(y - for yes/n - for no): ");
                         depchoise = checkYesNo();
                         if (depchoise == 1) {
-                            // addFunctions(1, USER_ID);
+                            addFunctions(1, USER_ID);
                             printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                         }else{
                             printf("\nUpdating students was incomplete!!\n");
@@ -747,13 +747,13 @@ void edit_student(char *USER_ID) {
                         printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                         int depchoise1 = checkYesNo();
                         if (depchoise1 == 1) {
-                            // view_department();
+                            reviewHistory();
                             printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                         } 
                         printf("Do you want to add any courses?\n(y - for yes/n - for no): ");
                         depchoise1 = checkYesNo();
                         if (depchoise1 == 1) {
-                            // addFunctions(2, USER_ID);
+                            addFunctions(2, USER_ID);
                             printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                         }else{
                             printf("\nAdding students was incomplete!!\n");
