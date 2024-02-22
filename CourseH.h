@@ -8,6 +8,7 @@
 // #define MAX_COURSES 100
 // #define MAX_MODULES 3
 // #define MAX_DEPARTMENTS 3
+//1
  #define MAX_HISTORY_ENTRIES 100
 
 
