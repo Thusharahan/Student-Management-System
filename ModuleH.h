@@ -134,17 +134,22 @@ void createModule(char *User_ID) {
     }
     if (!validInput) {
         printf("Error: Course ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue?\n(y - for yes/n - for no): ");
+        printf("Do you want to create a new course?\n(y - for yes/n - for no/ c - for try again): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
+            createCourse();
+            getchar();
             goto input_courseid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
-        } else {
+        } else if (choice_1 == 'c' || choice_1 == 'C'){
+            getchar();
+            goto input_courseid; // Prompt user to input module ID again
+        }else {
             printf("Invalid input. Try again...\n");
             getchar();
-            goto input_courseid;;
+            goto input_courseid;
         }
     }
 
@@ -159,6 +164,7 @@ void createModule(char *User_ID) {
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
+            getchar();
             goto input_moduleid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
@@ -183,6 +189,7 @@ void createModule(char *User_ID) {
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
+            getchar();
             goto input_moduleid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
@@ -212,13 +219,18 @@ void createModule(char *User_ID) {
     }
     if (!validInput) {
         printf("Error: Lecturer ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue?\n(y - for yes/n - for no): ");
+        printf("Do you want to add a new lecturer id?\n(y - for yes/n - for no/ c - for try again): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
+            getchar();
+            createLecturer();
             goto input_lecturerid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
+        }else if (choice_1 == 'c' || choice_1 == 'C'){
+            getchar();
+            goto input_lecturerid; // Prompt user to input module ID again
         }else {
             printf("Invalid input. Try again...\n");
             getchar();
@@ -382,14 +394,19 @@ void editModule(char *User_ID) {
     // If module ID doesn't exist, prompt user to continue or not
     if (!validInput) {
         printf("Error: Module ID does not exist. Please enter a valid ID.\n");
-        printf("Do you want to continue?\n(y - for yes/n - for no): ");
+        printf("Do you want to create a new module?\n(y - for yes/n - for no/ c - for try again): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
-            goto input_moduleid; // Prompt user to input module ID again
+             createModule();
+             getchar();
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return; // Return to main menu
-        } else{
+        } else if (choice_1 == 'c' || choice_1 == 'C'){
+            getchar();
+            goto input_moduleid; // Prompt user to input module ID again
+        }
+        else{
             printf("Invalid input. Try again...\n");
             getchar();
             goto input_moduleid;
@@ -438,7 +455,7 @@ void editModule(char *User_ID) {
                         strcpy(oldValue, modules[i].lecturer_id);
                     
                         input_lecturerid:
-                        printf("Enter new lecturer ID (eg: L_001): ");
+                        printf("Enter the lecturer ID (eg: L_001): ");
                         scanf("%s", newModule.lecturer_id);
                         validInput = false; // Reset validInput flag before checking
                         for (int i = 0; i < numModules; ++i) {
@@ -449,14 +466,19 @@ void editModule(char *User_ID) {
                         }
                         if (!validInput) {
                             printf("Error: Lecturer ID does not exist. Please enter a valid ID.\n");
-                            printf("Do you want to continue?\n(y - for yes/n - for no): ");
+                            printf("Do you want to add new lecturer?\n(y - for yes/n - for no/c - for try again): ");
                             char choice_1;
                             scanf(" %c", &choice_1);
                             if (choice_1 == 'y' || choice_1 == 'Y') {
+                                getchar();
+                                createLecturer();
                                 goto input_lecturerid;
                             } else if (choice_1 == 'n' || choice_1 == 'N') {
                                 return;
-                            } else {
+                            } else if (choice_1 == 'c' || choice_1 == 'C'){
+                                getchar();
+                                goto input_lecturerid; // Prompt user to input module ID again
+                            }else {
                                 printf("Invalid input. Try again...\n");
                                 getchar();
                                 goto input_lecturerid;
@@ -487,14 +509,24 @@ void deleteModule(char *User_ID) {
     printf("Enter the module ID to delete (eg: EN_0101): ");
     scanf("%s", moduleId);
 
-    bool found = false;
-    for (int i = 0; i < numModules; ++i) {
+    bool found = false;{
+    printf("Press 'y' to confirm: ");
+        char choice_1;
+        scanf(" %c", &choice_1);
+        if (choice_1 == 'y' || choice_1 == 'Y')
+        {
+        for (int i = 0; i < numModules; ++i) {
         if (strcmp(modules[i].module_id, moduleId) == 0 && modules[i].active) {
             found = true;
             modules[i].active = false;
             addModuleHistoryEntry(User_ID, "module", "delete", "", modules[i].module_name, moduleId);
             printf("Module deleted successfully...\n");
             break;
+            }
+        }
+        } else{
+           printf("Actions revoked...\n");
+           deleteModule();
         }
     }
 
@@ -512,7 +544,6 @@ void deleteModule(char *User_ID) {
         deleteModule(User_ID);
     }
 }
-
 void addModuleHistoryEntry(const char *userId, const char *entity, const char *action, const char *newValue, const char *oldValue, const char *editedModuleId) {
     if (historyIndexModule < MAX_HISTORY_ENTRIES) {
         time_t now = time(NULL);
