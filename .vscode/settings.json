@@ -2,6 +2,7 @@
     "files.associations": {
         "courseh.h": "c",
         "data_base.h": "c",
-        "specialfunct.h": "c"
+        "specialfunct.h": "c",
+        "ctype.h": "c"
     }
 }

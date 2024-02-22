@@ -6,7 +6,6 @@
 // #include <ctype.h>
 // #include "input.h"
 // #include "Data_Base.h"
-// new
 
 #define MAX_STUDENTS 25
 #define LIST_STUDENTS 20
@@ -119,7 +118,7 @@ void add_student(char *USER_ID) {
     char St_Name[35], St_ID[6], St_ContactNo[14], St_Email[35], St_EnrolledYear[5], St_Department[3], St_Course[6];
     if (num_students < MAX_STUDENTS) {
         printf("\nEnter Student Details:\n");
-        printf("Students full name: \n");
+        printf("\nStudents full name: \n");
         printf("Student's full name should be in block letters (E.g., FIRSTNAME SURNAME)\n");
         printf("Enter the students full name: ");
         while(1){
@@ -133,7 +132,7 @@ void add_student(char *USER_ID) {
 
         sprintf(St_ID, "S_%03d", num_students + 1);
 
-        printf("Phone number:\nPhone number should be in 10 digits (E.g: 0XXXXXXXXX)\n");
+        printf("\nPhone number:\nPhone number should be in 10 digits (E.g: 0XXXXXXXXX)\n");
         printf("Enter the phone number: ");
         while(1){
             scanf("%s", &St_ContactNo);
@@ -144,7 +143,7 @@ void add_student(char *USER_ID) {
                 continue;
             }
         }
-        printf("Enter email address (example@email.com): ");
+        printf("\nEnter email address (example@email.com): ");
         while(1){
             scanf("%s", &St_Email);
             if(isValidEmail(St_Email)){
@@ -162,7 +161,7 @@ void add_student(char *USER_ID) {
                 }
             }
             if (count == 1) {
-                printf("There is no departments avilable or they have been deleted.\n");
+                printf("\nThere is no departments avilable or they have been deleted.\n");
                 printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                 int depchoise = checkYesNo();
                 if (depchoise == 1) {
@@ -171,7 +170,7 @@ void add_student(char *USER_ID) {
                 printf("Do you want to add any department?\n(y - for yes/n - for no): ");
                 depchoise = checkYesNo();
                 if (depchoise == 1) {
-                    addFunctions(1, USER_ID);
+                    // addFunctions(1, USER_ID);
                 }else{
                     printf("\nAdding students was incomplete!!\n");
                     return;
@@ -191,27 +190,39 @@ void add_student(char *USER_ID) {
                 printf("%d. %s | ID - [%s]\n", num, departments[i].Dept_Name, departments[i].Dept_ID);
             }
         }
+        
+        label2:
         printf("\nEnter the department ID: ");
         scanf("%s", &St_Department);
+        for (int i = 0; i < MAX_DEPT; i++){
+            if(strcmp(departments[i].Dept_ID,St_Department) == 0) {
+                break;
+            } else{
+                printf("Entered wrong Department ID! Please try again.\n");
+                while(getchar() != '\n');
+                goto  label2;
+            }
+        }
+        
 
         while (1){
             int count1 = 1;
-            for (int i = 0; i < MAX_DEPT; i++){
+            for (int i = 0; i < MAX_CORS; i++){
                 if (strcmp(courses[i].departmentId, St_Department) == 0){
                     count1++;
                 }
             }
             if (count1 == 1) {
-                printf("There is no modules avilable under the selected department or they have been deleted.\n");
+                printf("\nThere is no courses avilable under the selected department or they have been deleted.\n");
                 printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
                 int depchoise1 = checkYesNo();
                 if (depchoise1 == 1) {
                     // view_department();
                 } 
-                printf("Do you want to add any modules?\n(y - for yes/n - for no): ");
+                printf("Do you want to add any courses?\n(y - for yes/n - for no): ");
                 depchoise1 = checkYesNo();
                 if (depchoise1 == 1) {
-                    addFunctions(2, USER_ID);
+                    // addFunctions(2, USER_ID);
                 }else{
                     printf("\nAdding students was incomplete!!\n");
                     return;
@@ -229,8 +240,21 @@ void add_student(char *USER_ID) {
                 printf("%d. %s | ID - [%s]\n", num, courses[i].name, courses[i].id);
             }
         }
+
+        label3:
         printf("\nEnter the course ID: ");
         scanf("%s", St_Course);
+        for (int i = 0; i < MAX_CORS; i++){
+            if(strcmp(courses[i].id,St_Course) == 0) {
+                break;
+            } else{
+                printf("Entered wrong Course ID! Please try again.\n");
+                while(getchar() != '\n');
+                goto label3;
+            }            
+        }
+           
+        
 
         strcpy(students[num_students].Std_Name, St_Name);
         strcpy(students[num_students].Std_ID, St_ID);
@@ -584,20 +608,122 @@ void edit_student(char *USER_ID) {
                 strcpy(field, "Department");
                 int dep = getDep(idval);
                 printf("Current Department: %s\n", departments[dep].Dept_Name);
-                printf("\nAvailable departments for selection: \n");
-                int num = 0;
-                for (int i = 0; i < MAX_DEPT; i++){
-                    if (strlen(departments[i].Dept_ID) > 0 && strlen(departments[i].Dept_Name) > 0) {
-                        printf("%d. %s | ID - [%s]\n", num + 1, departments[i].Dept_Name, departments[i].Dept_ID);
+                while(1){
+                    int count = 1;
+                    for (int i = 0; i < MAX_DEPT; i++){
+                        if (departments[i].active){
+                            count++;
+                        }
+                    }
+                    if (count == 1) {
+                        printf("\nThere is no departments avilable or they have been deleted.\n");
+                        printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                        int depchoise = checkYesNo();
+                        if (depchoise == 1) {
+                            // view_department();
+                        } 
+                        printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                        depchoise = checkYesNo();
+                        if (depchoise == 1) {
+                            // addFunctions(1, USER_ID);
+                        }else{
+                            printf("\nUpdating students was incomplete!!\n");
+                            return;
+                        }
+                    } else{
+                        break;
                     }
                 }
-                printf("Enter new department ID: ");
-                scanf("%s", new_value);
+
+                printf("\nSelect one department from following:\n");
+                printf("Available departments: \n");
+                // char department[MAX_DEPT][MAX_NAME_LEN];
+                int num = 0;
+                for (int i = 0; i < MAX_DEPT; i++){
+                    if (departments[i].active) {
+                        num++;
+                        printf("%d. %s | ID - [%s]\n", num, departments[i].Dept_Name, departments[i].Dept_ID);
+                    }
+                }
+                
+                label2:
+                printf("\nEnter the department ID: ");
+                scanf("%s", &new_value);
+                for (int i = 0; i < MAX_DEPT; i++){
+                    if(strcmp(departments[i].Dept_ID,new_value) == 0) {
+                        break;
+                    } else{
+                        printf("Entered wrong Department ID! Please try again.\n");
+                        while(getchar() != '\n');
+                        goto  label2;
+                    }
+                }
                 break;
+
+                // printf("\nAvailable departments for selection: \n");
+                // int num = 0;
+                // for (int i = 0; i < MAX_DEPT; i++){
+                //     if (strlen(departments[i].Dept_ID) > 0 && strlen(departments[i].Dept_Name) > 0) {
+                //         printf("%d. %s | ID - [%s]\n", num + 1, departments[i].Dept_Name, departments[i].Dept_ID);
+                //     }
+                // }
+                // printf("Enter new department ID: ");
+                // scanf("%s", new_value);
+                // break;
             case 5:
                 strcpy(field, "Course");
                 int course = getCourse(idval);
+                dep = getDep(idval);
                 printf("Current Course: %s\n", courses[course].name);
+                while (1){
+                    int count1 = 1;
+                    for (int i = 0; i < MAX_CORS; i++){
+                        if (strcmp(courses[i].departmentId, departments[dep].Dept_ID) == 0){
+                            count1++;
+                        }
+                    }
+                    if (count1 == 1) {
+                        printf("\nThere is no courses avilable under the department or they have been deleted.\n");
+                        printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                        int depchoise1 = checkYesNo();
+                        if (depchoise1 == 1) {
+                            // view_department();
+                        } 
+                        printf("Do you want to add any courses?\n(y - for yes/n - for no): ");
+                        depchoise1 = checkYesNo();
+                        if (depchoise1 == 1) {
+                            // addFunctions(2, USER_ID);
+                        }else{
+                            printf("\nAdding students was incomplete!!\n");
+                            return;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+
+                printf("\nAvailable courses under department:\n");
+                num = 0;
+                for (int i = 0; i < MAX_DEPT; i++) {
+                    if (strcmp(courses[i].departmentId, departments[dep].Dept_ID) == 0) {
+                        num++;
+                        printf("%d. %s | ID - [%s]\n", num, courses[i].name, courses[i].id);
+                    }
+                }
+
+                label3:
+                printf("\nEnter the course ID: ");
+                scanf("%s", new_value);
+                for (int i = 0; i < MAX_CORS; i++){
+                    if(strcmp(courses[i].id,new_value) == 0) {
+                        break;
+                    } else{
+                        printf("Entered wrong Course ID! Please try again.\n");
+                        while(getchar() != '\n');
+                        goto label3;
+                    }            
+                }
+
                 printf("\nAvailable courses for selection: \n");
                 num = 0;
                 for (int i = 0; i < MAX_DEPT; i++) {
@@ -617,18 +743,23 @@ void edit_student(char *USER_ID) {
         if (strcmp(field, "Name") == 0) {
             strcpy(old_value, students[idval].Std_Name);
             strcpy(students[idval].Std_Name, new_value);
+            printf("\nStudent name was updated.\n");
         } else if (strcmp(field, "Contact_number") == 0) {
             strcpy(old_value, students[idval].Std_ContactNo);
             strcpy(students[idval].Std_ContactNo, new_value);
+            printf("\nStudent contact number was updated.\n");
         } else if (strcmp(field, "Email") == 0) {
             strcpy(old_value, students[idval].Std_Email);
             strcpy(students[idval].Std_Email, new_value);
+            printf("\nStudent email was updated.\n");
         } else if (strcmp(field, "Department") == 0) {
             strcpy(old_value, students[idval].Std_Department);
             strcpy(students[idval].Std_Department, new_value);
+            printf("\nStudent department was updated.\n");
         } else if (strcmp(field, "Course") == 0) {
             strcpy(old_value, students[idval].Std_Course);
             strcpy(students[idval].Std_Course, new_value);
+            printf("\nStudent course was updated.\n");
         } 
         
         // Call the store_history function with the correct arguments
