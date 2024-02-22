@@ -516,7 +516,7 @@ void updateLecturer(char *User_ID) {
 
                     switch (choice) {
                         case 1:
-                            printf("Enter new name: ");
+                            printf("Enter new name(E.g: RAVI): ");
                             while (1) {
                                 fgets(lecturers[i].name, sizeof(lecturers[i].name), stdin);
                                 strtok(lecturers[i].name, "\n");
@@ -553,7 +553,7 @@ void updateLecturer(char *User_ID) {
                                 char newPhone[MAX_PHN_LEN];
                                 int validPhone = 0;
                                 do {
-                                    printf("Enter new phone number: ");
+                                    printf("Enter new phone number(E.g: 0xxxxxxxxx): ");
                                     fgets(newPhone, sizeof(newPhone), stdin);
                                     strtok(newPhone, "\n"); // Remove newline characters
                                     if (strlen(newPhone) != 10 || !isValidPhoneNumberLecture(newPhone)) {
@@ -571,7 +571,7 @@ void updateLecturer(char *User_ID) {
                                 char newEmail[MAX_NAME_LEN];
                                 int validEmail = 0;
                                 do {
-                                    printf("Enter new email ID: ");
+                                    printf("Enter new email ID: (E.g: lecturer_00x@gmail.com) ");
                                     fgets(newEmail, sizeof(newEmail), stdin);
                                     strtok(newEmail, "\n");
 
@@ -691,7 +691,7 @@ void deleteLecturer(char *User_ID) {
     while (1) {
         if (numLecturers > 0) {
             char searchId[MAX_ID_LEN];
-            printf("\nEnter the ID of the lecturer to delete (Enter 'exit' to quit): ");
+            printf("\nEnter the ID of the lecturer to delete (Enter exit to quit): ");
             scanf("%s", searchId);
 
             // Check if the user wants to exit
