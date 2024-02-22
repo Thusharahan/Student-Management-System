@@ -27,7 +27,7 @@ int historyIndexModule = 0;
 int numModules = 20;
 
 // Global variables
-int numCourses1 = 6;
+int numCourses1 = 20;
 // char currentUserId[10] = "1"; // Assume a default user ID for now
 
 // Function prototypes
