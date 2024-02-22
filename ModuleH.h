@@ -39,9 +39,10 @@ void deleteModule(char *User_ID);
 void addModuleHistoryEntry(const char *userId, const char *entity, const char *action, const char *newValue, const char *oldValue, const char *editedCourseId);
 void reviewHistoryModule();
 void search_modules();
-void to_lowercase(char *str);
 int get_lecture(int n);
+int get_course(int n);
 
+//main module
 void Module_main(char *User_ID) {
     int choice;
     do {
@@ -204,7 +205,7 @@ void createModule(char *User_ID) {
     // Check if the lecturer ID exists
     validInput = false; // Reset validInput flag before checking
     for (int i = 0; i < numModules; ++i) {
-        if (strcmp(newModule.lecturer_id, modules[i].lecturer_id) == 0) {
+        if (strcmp(newModule.lecturer_id, modules[i].lecturer_id) == 0 && lecturers[i].active) {
             validInput = true;
             break;
         }
@@ -226,17 +227,14 @@ void createModule(char *User_ID) {
     }
 
     newModule.active = true;
-
     modules[numModules++] = newModule;
-
     addModuleHistoryEntry(User_ID, "module", "create", newModule.module_name, "", newModule.module_id);
-
-    printf("Module created successfully.\n\n");
+    printf("Module created successfully...\n\n");
 
     int furtherAction;
     printf("1. Add another module\n");
     printf("2. Main menu\n");
-    printf("Enter your choice: ");
+    printf("Enter your choice number: ");
     scanf("%d", &furtherAction);
     getchar();
     if (furtherAction == 1) {
@@ -245,17 +243,22 @@ void createModule(char *User_ID) {
 }
 
 // Define the search_modules function outside of readModule
-void search_modules() {
+    void search_modules() {
     char moduleid[10];
-    printf("Enter the Module ID (eg : EN_0101) : ");
+    printf("Enter the module ID (eg: EN_0101) : ");
     scanf("%s", moduleid);
      
     bool found = false;
     for (int i = 0; i < numModules; ++i) {
         if (strcmp(modules[i].module_id, moduleid) == 0 && modules[i].active) {
             found = true;
-            printf("Module Name: %s\n", modules[i].module_name);
+            for (int j = 0; j < MAX_CORS; ++j) {
+                if (strcmp(courses[j].id, modules[i].course_id) == 0 && courses[j].active) {
+                    printf("\nCourse ID: %s\n", courses[j].id);
+                }
+            }
             printf("Module ID: %s\n", modules[i].module_id);
+            printf("Module Name: %s\n", modules[i].module_name);
             printf("Module Description: %s\n", modules[i].module_description);
            for (int j = 0; j < MAX_LEC; ++j) {
                 if (strcmp(lecturers[j].id, modules[i].lecturer_id) == 0 && lecturers[j].active) {
@@ -310,33 +313,56 @@ void readModule() {
     } else if (option == 1) {
         search_modules(readModule);; // Call search_modules function
     } else if (option == 2){
-        printf("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
-        printf("| %-12s | %-12s | %-40s | %-50s | %-20s |\n", "Module ID", "Course ID", "Module Name", "Description", "Lecturer Name");
-        printf("-----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf("| %-12s | %-15s | %-40s | %-50s | %-15s |\n", "Module ID", "Course ID", "Module Name", "Description", "Lecturer Name");
+        printf("-------------------------------------------------------------------------------------------------------------------------------------------------\n");
         for (int i = 0; i < numModules; ++i) {
             if (modules[i].active) {
-                int lec = get_lecture(i);
-                printf("| %-12s | %-12s | %-40s | %-50s | %-20s |\n", modules[i].module_id, modules[i].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                int lec = get_lecture(i) - 1;
+                int cou = get_course(i) - 1;
+
+                // If both lecture and course are deleted
+                if (get_lecture(i) == 0 && get_course(i) == 0) {
+                    printf("| %-12s | N/A | %-40s | %-50s | N/A |\n", modules[i].module_id, modules[i].module_name, modules[i].module_description);
+                }
+                // If lecture is deleted
+                else if (get_lecture(i) == 0) {
+                    printf("| %-12s | %-15s | %-40s | %-50s | N/A |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description);
+                }
+                // If course is deleted
+                else if (get_course(i) == 0) {
+                    printf("| %-12s | N/A | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                }
+                // If both lecture and course are available
+                else {
+                    printf("| %-12s | %-15s | %-40s | %-50s | %-15s |\n", modules[i].module_id, modules[cou].course_id, modules[i].module_name, modules[i].module_description, lecturers[lec].name);
+                }
             }
         }
-        printf("----------------------------------------------------------------------------------------------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
     } else {
         printf("Invalid input!\n");
         readModule();
     }
 }
 
-int get_lecture(int n){
-    for (int i=0 ; i<MAX_LEC ; i++){
-        if (strcmp (modules[n].lecturer_id, lecturers[i].id) == 0){
-            return i;
+int get_lecture(int n) {
+    for (int i = 0; i < MAX_LEC; i++) {
+        if (strcmp(modules[n].lecturer_id, lecturers[i].id) == 0 && lecturers[i].active) {
+            return i + 1;
         }
     }
+    return 0;  // If no active lecturer is found for the module
 }
-void to_lowercase(char *str) {
-    for (int i = 0; str[i]; i++) {
-        str[i] = tolower(str[i]);
+
+int get_course(int n) {
+    for (int i = 0; i < MAX_CORS; i++) {
+        if (strcmp(modules[n].course_id, courses[i].id) == 0 && courses[i].active) {
+            return i + 1;
+        }
     }
+    return 0;  // If no active lecturer is found for the module
 }
 
 void editModule(char *User_ID) {
@@ -404,14 +430,14 @@ void editModule(char *User_ID) {
                         printf("Enter new module name: ");
                         scanf("%s", modules[i].module_name);
                         addModuleHistoryEntry(User_ID, "module", "edit", modules[i].module_name, oldValue, moduleId);
-                        printf("Module edited successfully.\n");
+                        printf("Module edited successfully...\n\n");
                         break;
                     case 2:
                         strcpy(oldValue, modules[i].module_description);
                         printf("Enter new description: ");
                         scanf("%s", modules[i].module_description);
                         addModuleHistoryEntry(User_ID, "module", "edit", modules[i].module_description, oldValue, moduleId);
-                        printf("Module edited successfully.\n");
+                        printf("Module edited successfully...\n\n");
                         break;
                     case 3:
                         strcpy(oldValue, modules[i].lecturer_id);
@@ -421,7 +447,7 @@ void editModule(char *User_ID) {
                         scanf("%s", newModule.lecturer_id);
                         validInput = false; // Reset validInput flag before checking
                         for (int i = 0; i < numModules; ++i) {
-                            if (strcmp(newModule.lecturer_id, modules[i].lecturer_id) == 0) {
+                            if (strcmp(newModule.lecturer_id, modules[i].lecturer_id) == 0 && lecturers[i].active) {
                                 validInput = true; // Set validInput to true if a match is found
                                 break; // Exit loop once a match is found
                             }
@@ -443,14 +469,14 @@ void editModule(char *User_ID) {
                         }
                         strcpy(modules[i].lecturer_id,newModule.lecturer_id);
                         addModuleHistoryEntry(User_ID, "module", "edit", modules[i].lecturer_id, oldValue, moduleId);
-                        printf("Module edited successfully.\n");
+                        printf("Module edited successfully...\n\n");
                         break;
                     case 4:
                         return; // Go back
                     case 5:
                         Module_main(User_ID); // Return to main menu
                     default:
-                        printf("Invalid choice.\n");
+                        printf("Invalid choice. Try again...\n");
                 }
             }
         }
@@ -472,7 +498,7 @@ void deleteModule(char *User_ID) {
             found = true;
             modules[i].active = false;
             addModuleHistoryEntry(User_ID, "module", "delete", "", modules[i].module_name, moduleId);
-            printf("Module deleted successfully.\n");
+            printf("Module deleted successfully...\n");
             break;
         }
     }
