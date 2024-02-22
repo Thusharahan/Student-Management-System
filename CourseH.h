@@ -414,10 +414,10 @@ void readAllCourses(void (*previousMenu)()) {
             }
             
             for(int j=0;j<MAX_LEC;++j){
-               if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id==0 && lecturers[i].active)) {
+               if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id)==0 && lecturers[j].active) {
                 printf("In-Charge lecturer name: %s\n", lecturers[j].name);
                 break;}
-                if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id==0 && !lecturers[i].active)) {
+                if(strcmp(courses[i].inChargeLecturerId,lecturers[j].id)==0 && !lecturers[j].active) {
                 printf("In-Charge lecturer name: Not available \n ");
                 break;}
             }
@@ -430,7 +430,7 @@ void readAllCourses(void (*previousMenu)()) {
                     printf("| %-15s | %-30s |\n", modules[j].module_id, modules[j].module_name);
                 }
             }
-            printf("-------------------------------------------------------------\n");
+            printf("-----------------------------------------------------\n");
         }
     }
 
