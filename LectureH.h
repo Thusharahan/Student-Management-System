@@ -548,11 +548,8 @@ void updateLecturer(char *User_ID) {
 
                     switch (choice) {
                         case 1:
-<<<<<<< HEAD
-                            printf("Enter new name(E.g: RAVI): ");
-=======
+
                             printf("Enter new name(E.g: NAME): ");
->>>>>>> main
                             while (1) {
                                 fgets(lecturers[i].name, sizeof(lecturers[i].name), stdin);
                                 strtok(lecturers[i].name, "\n");
