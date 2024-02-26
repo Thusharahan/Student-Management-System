@@ -4,13 +4,13 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-#include "input.h"
 #include "Data_Base.h"
-#include "StudentH.h"
 #include "ModuleH.h"
 #include "DepartmentH.h"
 #include "CourseH.h"
 #include "LectureH.h"
+#include "SpecialFunct.h"
+#include "StudentH.h"
 
 #define MAX_LENGTH 50
 #define MAX_USERS 5
@@ -52,6 +52,7 @@ int main(){
         "Exit"
     };
 
+    // char userID[] = "Admin";
     char userID[MAX_LENGTH];
     char password[MAX_LENGTH];
 
@@ -78,19 +79,15 @@ int main(){
         }   
         
     }
-    
-    
 
-    
-    
     while(1){
         printf("---------------------------------------------------------------\n");
         printf("                 \033[1mSTUDENT MANAGEMENT SYSTEM\033[0m\n");
         printf("---------------------------------------------------------------\n\n");
         printf("Available fields of student management system.\n\n");
         printf("1. Department\n2. Courses\n3. Modules\n4. Lectures\n5. Students \n6. Exit\n");
-        printf("Choose any fields you want to work with: ");
-        choice = getInput(MainMenu ,5);
+        printf("\nChoose any fields you want to work with: ");
+        choice = getInput(MainMenu ,6);
 
         switch(choice){
             case 1:

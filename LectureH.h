@@ -3,6 +3,7 @@
 // #include <time.h>
 // #include <ctype.h>
 // #include "Data_Base.h"
+// #include 
 
 #define MAX_HISTORY_ENTRIES 100
 
@@ -14,7 +15,7 @@ typedef struct {
     char dateTime[30]; // Date and time of the modification
 } LecturerHistory;
 
-// Global arrays to store lecturers and history log
+// Global arrays and variable declaration
 Lecturer lecturers[MAX_LEC];
 LecturerHistory historyLecture[MAX_HISTORY_ENTRIES];
 int numLecturers = 6;
@@ -38,10 +39,11 @@ void view_student(char lec_id[MAX_NAME_LEN]);
 void Lecture_main(char *User_ID) {
     int choice;
     do {
-        printf("\nWelcome to the Student Management System - Section of Lecturer\n");
-        printf("Choices of Operations\n");
+        printf("\n--------------------------------------------\n");
+        printf("      STUDENT MANAGEMENT SYSTEM - LECTURE       ");
+        printf("\n--------------------------------------------\n");
         printf("1. Add Lecturer\n");
-        printf("2. View Lecturer\n");
+        printf("2. View Lecturer Details\n");
         printf("3. Update Lecturer Details\n");
         printf("4. Delete Lecturer\n");
         printf("5. View History\n");
@@ -84,7 +86,7 @@ void createLecturer(char *User_ID) {
             sprintf(newLecturer.id, "L_%03d", numLecturers + 1);
             printf("\nAssigned Lecturer ID: %s\n", newLecturer.id); // Display the assigned ID
             printf("Enter lecturer information:\n");
-            printf("Name should be in blocks letters\n");
+            printf("Name should be in blocks letters(E.g: RAVI)\n");
             printf("Name: ");
             while (1) {
                 fgets(newLecturer.name, sizeof(newLecturer.name), stdin);
@@ -117,7 +119,7 @@ void createLecturer(char *User_ID) {
             // Add email validation
             int validEmail = 0;
             do {
-                printf("Email (Ex: lecturer_xxx@gmail.com, xxx defines ID no): ");
+                printf("Email (E.g: lecturer_xxx@gmail.com, xxx defines ID no): ");
                 fgets(newLecturer.email, sizeof(newLecturer.email), stdin);
                 strtok(newLecturer.email, "\n");
 
@@ -147,7 +149,7 @@ void createLecturer(char *User_ID) {
             
             int validPhone = 0;
             do {
-                printf("Phone (Must be 10 digits number): ");
+                printf("Phone (E.g:0xxxxxxxxx): ");
                 fgets(newLecturer.phone, sizeof(newLecturer.phone), stdin);
                 strtok(newLecturer.phone, "\n");
                 if (strlen(newLecturer.phone) != 10 || !isValidPhoneNumberLecture(newLecturer.phone)) {
@@ -156,20 +158,51 @@ void createLecturer(char *User_ID) {
                     validPhone = 1;
                 }
             } while (!validPhone);
+
+            while(1){
+                int count = 1;
+                for (int i = 0; i < MAX_DEPT; i++){
+                    if (departments[i].active){
+                        count++;
+                    }
+                }
+                if (count == 1) {
+                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                    // int depchoise = checkYesNo();
+                    // if (depchoise == 1) {
+                    //     // view_delete();
+                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    // } 
+                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                    int depchoise = checkYesNo();
+                    if (depchoise == 1) {
+                        addFunctions(1, User_ID);
+                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }else{
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }
+                } else{
+                    break;
+                }
+            }
             
             // Print available departments
             printf("Available Departments:\n");
             for (int i = 0; i < MAX_DEPT; i++) {
                 if (strlen(departments[i].Dept_ID) > 0 && strlen(departments[i].Dept_Name) > 0) {
-                    printf("%d. ID '%s' is for choosing the %s department\n", i + 1, departments[i].Dept_ID, departments[i].Dept_Name);
+                    printf("%d. %s Department - [%s]\n",i + 1,  departments[i].Dept_Name,departments[i].Dept_ID);
+                    //printf("%d. ID '%s' is for choosing the %s department\n", i + 1, departments[i].Dept_ID, departments[i].Dept_Name);
                 }
             }
-
             // Get department choice from user
                 int deptChoice;
                 int departmentExists = 0;
             do {
-                printf("Choose department (Enter the corresponding number): ");
+                printf("Choose department.\nEnter the corresponding number : ");
                 if (scanf("%d", &deptChoice) != 1) { // Check if input is a number
                     printf("Invalid input! Please enter a number.\n");
                     while (getchar() != '\n'); // Clear input buffer
@@ -177,9 +210,16 @@ void createLecturer(char *User_ID) {
                 }
                 getchar(); 
 
-                if (deptChoice < 1 || deptChoice > MAX_DEPT) {
-                    printf("Invalid input! Please enter a number within the range.\n");
-                    continue; 
+                int numActiveDepartments = 0;
+                // Iterate through all departments
+                for (int i = 0; i < MAX_DEPT; i++) {
+                if (departments[i].active) {
+                numActiveDepartments++; // Increment count for each active department
+                }
+                }
+                if (deptChoice < 1 || deptChoice > numActiveDepartments) {
+                printf("Invalid input! Please enter a number within the range.\n");
+                continue; 
                 }
 
                 // Copy chosen department ID
@@ -235,17 +275,135 @@ void readLecturer() {
         scanf("%d", &choice);
         getchar(); // Consume newline character
 
-        switch (choice) {
-            case 1: {
-                // Display all active lecturers
+                switch (choice) {
+                case 1: {
+            // Display all active lecturers
+            if (numLecturers > 0) {
+                printf("\nAll Lecturer Personal Details\n");
+                printf("---------------------------------------------------------------------------------------------\n");
+                printf("| %-10s | %-20s | %-6s | %-11s | %-30s |\n", "ID", "Lecturer Name","Gender", "Phone", "Email");
+                printf("---------------------------------------------------------------------------------------------\n");
+                
+                for (int i = 0; i < numLecturers; i++) {
+                    if (lecturers[i].active) { // Check if lecturer is active
+                        printf("| %-10s | %-20s | %-6c | %-11s | %-30s |\n", 
+                            lecturers[i].id, lecturers[i].name, lecturers[i].gender, lecturers[i].phone, lecturers[i].email);
+                    }
+                }
+                printf("---------------------------------------------------------------------------------------------\n");
+
+                printf("\nAll Lecturer Academic Details\n");
+                printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                printf("| %-10s | %-20s | %-30s | %-20s | %-70s |\n", "ID", "Lecturer Name", "Department Name", "Course Name", "Module Name");
+                printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                
+                for (int i = 0; i < numLecturers; i++) {
+                    if (lecturers[i].active) { // Check if lecturer is active
+                        char departmentName[MAX_NAME_LEN];
+                        int departmentFound = 0;
+                        for (int j = 0; j < MAX_DEPT; j++) {
+                            if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0 && departments[j].active) {
+                                strcpy(departmentName, departments[j].Dept_Name);
+                                departmentFound = 1;
+                                break;
+                            }
+                        }
+                        if (!departmentFound) {
+                            strcpy(departmentName, "N/A");
+                        }
+
+                        char courseName[MAX_NAME_LEN];
+                        int courseFound = 0;
+                        for (int k = 0; k < MAX_CORS; k++) {
+                            if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0 && courses[k].active) {
+                                strcpy(courseName, courses[k].name);
+                                courseFound = 1;
+                                break;
+                            }
+                        }
+                        if (!courseFound) {
+                            strcpy(courseName, "N/A");
+                        }
+
+                        // Find and print module names
+                        char moduleNames[MAX_NAME_LEN] = ""; // Concatenated string to hold all module names
+                        for (int m = 0; m < MAX_MOD; m++) {
+                            if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0 && modules[m].active) {
+                                strcat(moduleNames, modules[m].module_name);
+                                strcat(moduleNames, ", ");
+                            }
+                        }
+                        if (strlen(moduleNames) > 0) {
+                            // Remove the trailing comma and space
+                            moduleNames[strlen(moduleNames) - 2] = '\0';
+                        } else {
+                            strcpy(moduleNames, "N/A");
+                        }
+
+                        printf("| %-10s | %-20s | %-30s | %-20s | %-70s |\n", 
+                            lecturers[i].id, lecturers[i].name, departmentName, courseName, moduleNames);
+                    }
+                }
+                printf("----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+            } else {
+                printf("No lecturers to display!\n");
+            }
+            break;
+        }
+
+
+
+            case 2: {
+                // Search for a specific lecturer by name or ID
                 if (numLecturers > 0) {
-                    printf("\nList of All Lecturers:\n");
+                    int validID = 0;
+                    char search[MAX_NAME_LEN];
+                    while (!validID) {
+                        printf("\nEnter the ID of the lecturer (Ex: L_00x): ");
+                        scanf("%s", search);
+                        validID = isValidIDLecture(search);
+                        if (!validID) {
+                            printf("Invalid ID input. Please enter a correct ID.\n");
+                        } else {
+                            // Check if the entered ID exists in the list of lecturers
+                            int found = 0;
+                            for (int i = 0; i < numLecturers; i++) {
+                                if (strcmp(lecturers[i].id, search) == 0) {
+                                    found = 1;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                printf("Lecturer with ID '%s' does not exist. Please enter a valid ID.\n", search);
+                                validID = 0; // Reset validID flag to prompt for input again
+                            }
+                        }
+                    }
+
+
+
+                    int found = 0;
                     for (int i = 0; i < numLecturers; i++) {
-                        if (lecturers[i].active) { // Check if lecturer is active
+                        // Check if the entered string matches lecturer's name or ID
+                        if ((strcmp(lecturers[i].name, search) == 0 || strcmp(lecturers[i].id, search) == 0) && lecturers[i].active) { 
+                            printf("\nPersonal Details for Lecturer with ID '%s':\n", search);
+                            printf("---------------------------------------------------------------------------------------------\n");
+                            printf("| %-10s | %-20s | %-6s | %-11s | %-30s |\n", "ID", "Name", "Gender", "Phone", "Email");
+                            printf("---------------------------------------------------------------------------------------------\n");
+                            printf("| %-10s | %-20s | %-6c | %-11s | %-30s |\n", 
+                                lecturers[i].id, lecturers[i].name, lecturers[i].gender, lecturers[i].phone, lecturers[i].email);
+                            printf("---------------------------------------------------------------------------------------------\n");
+
+                            printf("\nAcademic Details for Lecturer with ID '%s':\n", search);
+                            printf("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+                            printf("| %-10s | %-20s | %-35s | %-20s | %-70s |\n", "ID", "Lecturer Name", "Department Name", "Course Name", "Module Name");
+                            printf("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+                            // Find and print the department name
                             char departmentName[MAX_NAME_LEN];
                             int departmentFound = 0;
                             for (int j = 0; j < MAX_DEPT; j++) {
-                                if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0) {
+                                if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0 && departments[i].active) {
                                     strcpy(departmentName, departments[j].Dept_Name);
                                     departmentFound = 1;
                                     break;
@@ -255,10 +413,11 @@ void readLecturer() {
                                 strcpy(departmentName, "N/A");
                             }
 
+                            // Find and print the course name
                             char courseName[MAX_NAME_LEN];
                             int courseFound = 0;
                             for (int k = 0; k < MAX_CORS; k++) {
-                                if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0) {
+                                if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0 && courses[k].active) {
                                     strcpy(courseName, courses[k].name);
                                     courseFound = 1;
                                     break;
@@ -271,7 +430,7 @@ void readLecturer() {
                             // Find and print module names
                             char moduleNames[MAX_NAME_LEN] = ""; // Concatenated string to hold all module names
                             for (int m = 0; m < MAX_MOD; m++) {
-                                if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0) {
+                                if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0 && modules[m].active) {
                                     strcat(moduleNames, modules[m].module_name);
                                     strcat(moduleNames, ", ");
                                 }
@@ -283,92 +442,9 @@ void readLecturer() {
                                 strcpy(moduleNames, "N/A");
                             }
 
-                            printf("ID: %s\n", lecturers[i].id);
-                            printf("Name: %s\n", lecturers[i].name);
-                            printf("Gender: %c\n", lecturers[i].gender);
-                            printf("Phone: %s\n", lecturers[i].phone);
-                            printf("Email: %s\n", lecturers[i].email);
-                            printf("Department Name: %s\n", departmentName);
-                            printf("Course Name: %s\n", courseName);
-                            printf("Module Names: %s\n", moduleNames);
-                            printf("\n");
-                        }
-                    }
-                } else {
-                    printf("No lecturers to display!\n");
-                }
-                break;
-            }
-            case 2: {
-                // Search for a specific lecturer by name or ID
-                if (numLecturers > 0) {
-                    int validID = 0;
-                    char search[MAX_NAME_LEN];
-                    while (!validID) {
-                        printf("\nEnter the ID of the lecturer (Ex: L_00x): ");
-                        scanf("%s", search);
-                        validID = isValidIDLecture(search);
-                        if (!validID) {
-                            printf("Invalid ID input. Please enter a correct ID.\n");
-                        }
-                    }
-
-                    int found = 0;
-                    for (int i = 0; i < numLecturers; i++) {
-                        // Check if the entered string matches lecturer's name or ID
-                        if ((strcmp(lecturers[i].name, search) == 0 || strcmp(lecturers[i].id, search) == 0) && lecturers[i].active) { 
-                            printf("\nDetails for Lecturer with ID '%s':\n", search);
-                            printf("Name: %s\n", lecturers[i].name);
-                            printf("ID: %s\n", lecturers[i].id);
-                            printf("Gender: %c\n", lecturers[i].gender);
-                            printf("Phone: %s\n", lecturers[i].phone);
-                            printf("Email: %s\n", lecturers[i].email);
-
-                            // Find and print the department name
-                            char departmentName[MAX_NAME_LEN];
-                            int departmentFound = 0;
-                            for (int j = 0; j < MAX_DEPT; j++) {
-                                if (strcmp(departments[j].Dept_ID, lecturers[i].department_id) == 0) {
-                                    strcpy(departmentName, departments[j].Dept_Name);
-                                    departmentFound = 1;
-                                    break;
-                                }
-                            }
-                            if (!departmentFound) {
-                                strcpy(departmentName, "N/A");
-                            }
-
-                            printf("Department: %s\n", departmentName);
-
-                            // Find and print the course name
-                            char courseName[MAX_NAME_LEN];
-                            int courseFound = 0;
-                            for (int k = 0; k < MAX_CORS; k++) {
-                                if (strcmp(courses[k].inChargeLecturerId, lecturers[i].id) == 0) {
-                                    strcpy(courseName, courses[k].name);
-                                    courseFound = 1;
-                                    break;
-                                }
-                            }
-                            if (courseFound) {
-                                printf("Courses: %s\n", courseName);
-                            } else {
-                                printf("Course: N/A\n");
-                            }
-
-                            // Find and print module names
-                            printf("Module Names: ");
-                            int moduleFound = 0;
-                            for (int m = 0; m < MAX_MOD; m++) {
-                                if (strcmp(modules[m].lecturer_id, lecturers[i].id) == 0) {
-                                    printf("%s, ", modules[m].module_name);
-                                    moduleFound = 1;
-                                }
-                            }
-                            if (!moduleFound) {
-                                printf("N/A");
-                            }
-                            printf("\n");
+                            printf("| %-10s | %-20s | %-35s | %-20s | %-70s |\n", 
+                                lecturers[i].id, lecturers[i].name, departmentName, courseName, moduleNames);
+                            printf("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
 
                             printf("\n");
                             found = 1;
@@ -388,21 +464,29 @@ void readLecturer() {
                     int validID = 0;
                     char search[MAX_NAME_LEN];
                     while (!validID) {
-                        printf("\nEnter the ID of the lecturer (Ex: L_00x): ");
-                        scanf("%s", search);
-                        validID = isValidIDLecture(search);
-                        if (!validID) {
-                            printf("Invalid ID input. Please enter a correct ID.\n");
+                    printf("\nEnter the ID of the lecturer (Ex: L_00x): ");
+                    scanf("%s", search);
+                    validID = isValidIDLecture(search);
+                    if (!validID) {
+                        printf("Invalid ID input. Please enter a correct ID.\n");
+                    } else {
+                        // Check if the entered ID exists in the list of lecturers
+                        int lecturerExists = 0;
+                        for (int i = 0; i < numLecturers; i++) {
+                            if (strcmp(lecturers[i].id, search) == 0 && lecturers[i].active) {
+                                lecturerExists = 1;
+                                break;
+                            }
                         }
-                        else
-                        {
-                            view_student(search);
+                        if (!lecturerExists) {
+                            printf("Lecturer with ID '%s' does not exist or is inactive. Please enter a valid and active ID.\n", search);
+                            validID = 0; // Reset validID flag to prompt for input again
+                        } else {
+                            view_student(search); // Call view_student only if lecturer exists and is active
                         }
                     }
-
                 }
-
-
+                }
                 break;
             case 4:
                 return; 
@@ -417,19 +501,34 @@ void updateLecturer(char *User_ID) {
         if (numLecturers > 0) {
             int validID = 0;
             char searchId[MAX_ID_LEN];
-            while (!validID) {
-                printf("\nEnter the ID of the lecturer to update (Ex: L_00x): ");
-                scanf("%s", searchId);
-                validID = isValidIDLecture(searchId);
-                if (!validID) {
-                    printf("Invalid ID input. Please enter a correct ID.\n");
-                }
-            }
 
+        while (!validID) {
+            printf("\nEnter the ID of the lecturer to update (Ex: L_00x): ");
+            scanf("%s", searchId);
+            
             // Check if the user wants to exit
-            if (strcmp(searchId, "exit") == 0) {
+            if (strcmp(searchId, "exit") == 0 || strcmp(searchId, "EXIT") == 0) {
                 break; // Exit the loop
             }
+
+            validID = isValidIDLecture(searchId);
+            if (!validID) {
+                printf("Invalid ID input. Please enter a correct ID.\n");
+            } else {
+                // Check if the entered ID exists in the list of lecturers
+                int lecturerExists = 0;
+                for (int i = 0; i < numLecturers; i++) {
+                    if (strcmp(lecturers[i].id, searchId) == 0 && lecturers[i].active) {
+                        lecturerExists = 1;
+                        break;
+                    }
+                }
+                if (!lecturerExists) {
+                    printf("Lecturer with ID '%s' does not exist or is inactive. Please enter a valid and active ID.\n", searchId);
+                    validID = 0; // Reset validID flag to prompt for input again
+                }
+            }
+        }
 
             int found = 0;
             for (int i = 0; i < numLecturers; i++) {
@@ -449,7 +548,7 @@ void updateLecturer(char *User_ID) {
 
                     switch (choice) {
                         case 1:
-                            printf("Enter new name: ");
+                            printf("Enter new name(E.g: NAME): ");
                             while (1) {
                                 fgets(lecturers[i].name, sizeof(lecturers[i].name), stdin);
                                 strtok(lecturers[i].name, "\n");
@@ -486,7 +585,7 @@ void updateLecturer(char *User_ID) {
                                 char newPhone[MAX_PHN_LEN];
                                 int validPhone = 0;
                                 do {
-                                    printf("Enter new phone number: ");
+                                    printf("Enter new phone number(E.g: 0xxxxxxxxx): ");
                                     fgets(newPhone, sizeof(newPhone), stdin);
                                     strtok(newPhone, "\n"); // Remove newline characters
                                     if (strlen(newPhone) != 10 || !isValidPhoneNumberLecture(newPhone)) {
@@ -504,7 +603,7 @@ void updateLecturer(char *User_ID) {
                                 char newEmail[MAX_NAME_LEN];
                                 int validEmail = 0;
                                 do {
-                                    printf("Enter new email ID: ");
+                                    printf("Enter new email ID: (E.g: lecturer_00x@gmail.com) ");
                                     fgets(newEmail, sizeof(newEmail), stdin);
                                     strtok(newEmail, "\n");
 
@@ -535,6 +634,36 @@ void updateLecturer(char *User_ID) {
                             }
 
                         case 5:
+                            while(1){
+                                int count = 1;
+                                for (int i = 0; i < MAX_DEPT; i++){
+                                    if (departments[i].active){
+                                        count++;
+                                    }
+                                }
+                                if (count == 1) {
+                                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                                    // int depchoise = checkYesNo();
+                                    // if (depchoise == 1) {
+                                    //     // view_delete();
+                                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                    // } 
+                                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                                    int depchoise = checkYesNo();
+                                    if (depchoise == 1) {
+                                        addFunctions(1, User_ID);
+                                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }else{
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }
+                                } else{
+                                    break;
+                                }
+                            }
                             // Print available departments
                             printf("Available Departments:\n");
                             for (int i = 0; i < MAX_DEPT; i++) {
@@ -556,7 +685,15 @@ void updateLecturer(char *User_ID) {
                                 }
                                 getchar(); // Consume newline character
 
-                                if (deptChoice < 1 || deptChoice > MAX_DEPT) {
+                                
+                                int numActiveDepartments = 0;
+                                // Iterate through all departments
+                                for (int i = 0; i < MAX_DEPT; i++) {
+                                    if (departments[i].active) {
+                                        numActiveDepartments++; // Increment count for each active department
+                                    }
+                                }
+                                if (deptChoice < 1 || deptChoice > numActiveDepartments) {
                                     printf("Invalid input! Please enter a number within the range.\n");
                                     continue; 
                                 }
@@ -585,6 +722,7 @@ void updateLecturer(char *User_ID) {
                             return; // Exit the function
                         default:
                             printf("Invalid choice. Please enter a number from 1 to 6.\n");
+                            break;
                     }
                     addToHistory("Update", lecturers[i].id, User_ID);
                     printf("Lecturer information updated successfully!\n");
@@ -615,17 +753,24 @@ void deleteLecturer(char *User_ID) {
     while (1) {
         if (numLecturers > 0) {
             char searchId[MAX_ID_LEN];
-            printf("\nEnter the ID of the lecturer to delete (Enter 'exit' to quit): ");
+            printf("\nEnter the ID of the lecturer to delete (Enter exit to quit): ");
             scanf("%s", searchId);
 
             // Check if the user wants to exit
-            if (strcmp(searchId, "exit") == 0) {
+            if (strcmp(searchId, "exit") == 0 || strcmp(searchId,"EXIT")==0) {
                 break; // Exit the loop
             }
 
+            int validID = isValidIDLecture(searchId);
+            if (!validID) {
+                printf("Invalid ID input. Please enter a correct ID.\n");
+                continue; // Prompt for input again
+            }
+
+            // Check if the lecturer with the entered ID exists and is active
             int found = 0;
             for (int i = 0; i < numLecturers; i++) {
-                if (strcmp(lecturers[i].id, searchId) == 0) {
+                if (strcmp(lecturers[i].id, searchId) == 0 && lecturers[i].active) {
                     printf("Lecturer found. Are you sure you want to delete this lecturer? (Press Y to confirm | Press N to exit): ");
                     int confirm = checkYesNoLecture();
 
@@ -635,7 +780,7 @@ void deleteLecturer(char *User_ID) {
                         
                         addToHistory("Delete", searchId, User_ID);
                         printf("Lecturer deleted successfully!\n");
-                    } else if (confirm == 2){
+                    } else if (confirm == 2) {
                         printf("Deletion cancelled.\n");
                     }
                     found = 1;
@@ -643,7 +788,7 @@ void deleteLecturer(char *User_ID) {
                 }
             }
             if (!found) {
-                printf("No lecturer found with the ID '%s'!\n", searchId);
+                printf("No active lecturer found with the ID '%s'!\n", searchId);
             }
         } else {
             printf("No lecturers to delete!\n");
@@ -651,8 +796,6 @@ void deleteLecturer(char *User_ID) {
         }
     }
 }
-
-
 // Function to add an entry to the history log
 void addToHistory(const char* operation, const char* lecturerId, const char* userName) {
     if (numHistoryEntries < MAX_HISTORY_ENTRIES) {
@@ -753,32 +896,24 @@ int isValidIDLecture(const char* id) {
     }
     return 1;
 }
-
-
-void view_student(char lec_id[])
-{
-    printf("\nStudents under Lecturers : \n\n");
-    for(int i = 0; i < MAX_LEC; i++)
-    {
-        if(strcmp(lec_id, lecturers[i].id) == 0 && lecturers[i].active)
-        {
-            printf("%-5s - %-30s\n\n", lec_id, lecturers[i].name);
-            for(int r = 0; r < MAX_CORS; r++)
-            {
-                if(strcmp(lec_id, courses[r].inChargeLecturerId) == 0 && courses[r].active)
-                {
-                    for(int x = 0; x < MAX_STD; x++)
-                    {
-                        if(strcmp(courses[r].id, students[x].Std_Course) == 0 && students[x].Std_Visible)
-                        {
-                            printf("\t%-5s  -  %-30s\n", students[x].Std_ID, students[x].Std_Name);
+void view_student(char lec_id[]) {
+    printf("\nStudents under Lecturers:\n\n");
+    printf("-------------------------------------------------------------------------------------------------------\n");
+    printf("| %-15s | %-30s | %-15s | %-30s |\n", "Lecturer ID", "Lecturer Name", "Student ID", "Student Name");
+    printf("-------------------------------------------------------------------------------------------------------\n");
+    
+    for (int i = 0; i < MAX_LEC; i++) {
+        if (strcmp(lec_id, lecturers[i].id) == 0 && lecturers[i].active) {
+            for (int r = 0; r < MAX_CORS; r++) {
+                if (strcmp(lec_id, courses[r].inChargeLecturerId) == 0 && courses[r].active) {
+                    for (int x = 0; x < MAX_STD; x++) {
+                        if (strcmp(courses[r].id, students[x].Std_Course) == 0 && students[x].Std_Visible) {
+                            printf("| %-15s | %-30s | %-15s | %-30s |\n", lec_id, lecturers[i].name, students[x].Std_ID, students[x].Std_Name);
                         }
                     }
                 }
             }
         }
     }
+    printf("-------------------------------------------------------------------------------------------------------\n");
 }
-
-
-
