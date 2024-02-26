@@ -3,6 +3,10 @@
         "courseh.h": "c",
         "data_base.h": "c",
         "specialfunct.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "time.h": "c",
+        "moduleh.h": "c",
+        "departmenth.h": "c",
+        "stdbool.h": "c"
     }
 }

@@ -15,7 +15,7 @@ typedef struct {
     char dateTime[30]; // Date and time of the modification
 } LecturerHistory;
 
-// Global arrays to store lecturers and history log
+// Global arrays and variable declaration
 Lecturer lecturers[MAX_LEC];
 LecturerHistory historyLecture[MAX_HISTORY_ENTRIES];
 int numLecturers = 6;
@@ -39,8 +39,9 @@ void view_student(char lec_id[MAX_NAME_LEN]);
 void Lecture_main(char *User_ID) {
     int choice;
     do {
-        printf("\nWelcome to the Student Management System - Section of Lecturer\n");
-        printf("Choices of Operations\n");
+        printf("\n--------------------------------------------\n");
+        printf("      STUDENT MANAGEMENT SYSTEM - LECTURE       ");
+        printf("\n--------------------------------------------\n");
         printf("1. Add Lecturer\n");
         printf("2. View Lecturer Details\n");
         printf("3. Update Lecturer Details\n");
@@ -157,6 +158,37 @@ void createLecturer(char *User_ID) {
                     validPhone = 1;
                 }
             } while (!validPhone);
+
+            while(1){
+                int count = 1;
+                for (int i = 0; i < MAX_DEPT; i++){
+                    if (departments[i].active){
+                        count++;
+                    }
+                }
+                if (count == 1) {
+                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                    // int depchoise = checkYesNo();
+                    // if (depchoise == 1) {
+                    //     // view_delete();
+                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    // } 
+                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                    int depchoise = checkYesNo();
+                    if (depchoise == 1) {
+                        addFunctions(1, User_ID);
+                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }else{
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }
+                } else{
+                    break;
+                }
+            }
             
             // Print available departments
             printf("Available Departments:\n");
@@ -166,7 +198,6 @@ void createLecturer(char *User_ID) {
                     //printf("%d. ID '%s' is for choosing the %s department\n", i + 1, departments[i].Dept_ID, departments[i].Dept_Name);
                 }
             }
-
             // Get department choice from user
                 int deptChoice;
                 int departmentExists = 0;
@@ -470,31 +501,34 @@ void updateLecturer(char *User_ID) {
         if (numLecturers > 0) {
             int validID = 0;
             char searchId[MAX_ID_LEN];
-            while (!validID) {
-                printf("\nEnter the ID of the lecturer to update (Ex: L_00x): ");
-                scanf("%s", searchId);
-                validID = isValidIDLecture(searchId);
-                if (!validID) {
-                    printf("Invalid ID input. Please enter a correct ID.\n");
-                } else {
-                    // Check if the entered ID exists in the list of lecturers
-                    int lecturerExists = 0;
-                    for (int i = 0; i < numLecturers; i++) {
-                        if (strcmp(lecturers[i].id, searchId) == 0 && lecturers[i].active) {
-                            lecturerExists = 1;
-                            break;
-                        }
-                    }
-                    if (!lecturerExists) {
-                        printf("Lecturer with ID '%s' does not exist or is inactive. Please enter a valid and active ID.\n", searchId);
-                        validID = 0; // Reset validID flag to prompt for input again
-                    }
-                }
-            }
+
+        while (!validID) {
+            printf("\nEnter the ID of the lecturer to update (Ex: L_00x): ");
+            scanf("%s", searchId);
+            
             // Check if the user wants to exit
-            if (strcmp(searchId, "exit") == 0) {
+            if (strcmp(searchId, "exit") == 0 || strcmp(searchId, "EXIT") == 0) {
                 break; // Exit the loop
             }
+
+            validID = isValidIDLecture(searchId);
+            if (!validID) {
+                printf("Invalid ID input. Please enter a correct ID.\n");
+            } else {
+                // Check if the entered ID exists in the list of lecturers
+                int lecturerExists = 0;
+                for (int i = 0; i < numLecturers; i++) {
+                    if (strcmp(lecturers[i].id, searchId) == 0 && lecturers[i].active) {
+                        lecturerExists = 1;
+                        break;
+                    }
+                }
+                if (!lecturerExists) {
+                    printf("Lecturer with ID '%s' does not exist or is inactive. Please enter a valid and active ID.\n", searchId);
+                    validID = 0; // Reset validID flag to prompt for input again
+                }
+            }
+        }
 
             int found = 0;
             for (int i = 0; i < numLecturers; i++) {
@@ -514,7 +548,7 @@ void updateLecturer(char *User_ID) {
 
                     switch (choice) {
                         case 1:
-                            printf("Enter new name: ");
+                            printf("Enter new name(E.g: NAME): ");
                             while (1) {
                                 fgets(lecturers[i].name, sizeof(lecturers[i].name), stdin);
                                 strtok(lecturers[i].name, "\n");
@@ -551,7 +585,7 @@ void updateLecturer(char *User_ID) {
                                 char newPhone[MAX_PHN_LEN];
                                 int validPhone = 0;
                                 do {
-                                    printf("Enter new phone number: ");
+                                    printf("Enter new phone number(E.g: 0xxxxxxxxx): ");
                                     fgets(newPhone, sizeof(newPhone), stdin);
                                     strtok(newPhone, "\n"); // Remove newline characters
                                     if (strlen(newPhone) != 10 || !isValidPhoneNumberLecture(newPhone)) {
@@ -569,7 +603,7 @@ void updateLecturer(char *User_ID) {
                                 char newEmail[MAX_NAME_LEN];
                                 int validEmail = 0;
                                 do {
-                                    printf("Enter new email ID: ");
+                                    printf("Enter new email ID: (E.g: lecturer_00x@gmail.com) ");
                                     fgets(newEmail, sizeof(newEmail), stdin);
                                     strtok(newEmail, "\n");
 
@@ -600,6 +634,36 @@ void updateLecturer(char *User_ID) {
                             }
 
                         case 5:
+                            while(1){
+                                int count = 1;
+                                for (int i = 0; i < MAX_DEPT; i++){
+                                    if (departments[i].active){
+                                        count++;
+                                    }
+                                }
+                                if (count == 1) {
+                                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                                    // int depchoise = checkYesNo();
+                                    // if (depchoise == 1) {
+                                    //     // view_delete();
+                                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                    // } 
+                                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                                    int depchoise = checkYesNo();
+                                    if (depchoise == 1) {
+                                        addFunctions(1, User_ID);
+                                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }else{
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }
+                                } else{
+                                    break;
+                                }
+                            }
                             // Print available departments
                             printf("Available Departments:\n");
                             for (int i = 0; i < MAX_DEPT; i++) {
@@ -658,6 +722,7 @@ void updateLecturer(char *User_ID) {
                             return; // Exit the function
                         default:
                             printf("Invalid choice. Please enter a number from 1 to 6.\n");
+                            break;
                     }
                     addToHistory("Update", lecturers[i].id, User_ID);
                     printf("Lecturer information updated successfully!\n");
@@ -688,17 +753,24 @@ void deleteLecturer(char *User_ID) {
     while (1) {
         if (numLecturers > 0) {
             char searchId[MAX_ID_LEN];
-            printf("\nEnter the ID of the lecturer to delete (Enter 'exit' to quit): ");
+            printf("\nEnter the ID of the lecturer to delete (Enter exit to quit): ");
             scanf("%s", searchId);
 
             // Check if the user wants to exit
-            if (strcmp(searchId, "exit") == 0) {
+            if (strcmp(searchId, "exit") == 0 || strcmp(searchId,"EXIT")==0) {
                 break; // Exit the loop
             }
 
+            int validID = isValidIDLecture(searchId);
+            if (!validID) {
+                printf("Invalid ID input. Please enter a correct ID.\n");
+                continue; // Prompt for input again
+            }
+
+            // Check if the lecturer with the entered ID exists and is active
             int found = 0;
             for (int i = 0; i < numLecturers; i++) {
-                if (strcmp(lecturers[i].id, searchId) == 0) {
+                if (strcmp(lecturers[i].id, searchId) == 0 && lecturers[i].active) {
                     printf("Lecturer found. Are you sure you want to delete this lecturer? (Press Y to confirm | Press N to exit): ");
                     int confirm = checkYesNoLecture();
 
@@ -708,7 +780,7 @@ void deleteLecturer(char *User_ID) {
                         
                         addToHistory("Delete", searchId, User_ID);
                         printf("Lecturer deleted successfully!\n");
-                    } else if (confirm == 2){
+                    } else if (confirm == 2) {
                         printf("Deletion cancelled.\n");
                     }
                     found = 1;
@@ -716,7 +788,7 @@ void deleteLecturer(char *User_ID) {
                 }
             }
             if (!found) {
-                printf("No lecturer found with the ID '%s'!\n", searchId);
+                printf("No active lecturer found with the ID '%s'!\n", searchId);
             }
         } else {
             printf("No lecturers to delete!\n");
@@ -724,8 +796,6 @@ void deleteLecturer(char *User_ID) {
         }
     }
 }
-
-
 // Function to add an entry to the history log
 void addToHistory(const char* operation, const char* lecturerId, const char* userName) {
     if (numHistoryEntries < MAX_HISTORY_ENTRIES) {
@@ -847,7 +917,3 @@ void view_student(char lec_id[]) {
     }
     printf("-------------------------------------------------------------------------------------------------------\n");
 }
-
-
-
-
