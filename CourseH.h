@@ -40,6 +40,7 @@ void editCourse(char *User_ID);
 void deleteCourse(char *User_ID);
 void addHistoryEntry(const char *userId, const char *entity, const char *action, const char *newValue, const char *oldValue, const char *editedCourseId);
 void reviewHistory();
+int checkYesNo();
 bool isValidNameCourse(char *input) {
     // Iterate through each character in the input string
     for (int i = 0; input[i] != '\0'; i++) {
@@ -156,6 +157,36 @@ void createCourse(char *User_ID) {
     char tempId[MAX_ID_LEN];
     bool validInput = false;
     input_departmentId:
+    while(1){
+        int count = 1;
+        for (int i = 0; i < MAX_DEPT; i++){
+            if (departments[i].active){
+                count++;
+            }
+        }
+        if (count == 1) {
+            printf("\nThere is no departments avilable or they have been deleted.\n");
+            // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+            // int depchoise = checkYesNo();
+            // if (depchoise == 1) {
+            //     // view_delete();
+            //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+            // } 
+            printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+            int depchoise = checkYesNo();
+            if (depchoise == 1) {
+                addFunctions(1, User_ID);
+                // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                printf("\nAdding Course was incomplete!!\n");
+                return;
+            }else{
+                printf("\nAdding Course was incomplete!!\n");
+                return;
+            }
+        } else{
+            break;
+        }
+    }
     do {
         bool departmentExists = false;
         printf("\nAvailable departments are:\n");
@@ -192,12 +223,12 @@ for (int i = 0; i < MAX_DEPT; ++i) {
             }
         }
         if (!departmentExists) {
-            printf("\nDepartment ID does not exist...! Please enter a valid department ID.\n\n");
+            printf("\nDepartment ID does not exist...!\n\n");
             printf("Do you want to create an new department?\n(y - for yes/n - for no): ");
             char choice_3;
                  scanf(" %c", &choice_3);
                  if (choice_3== 'y' || choice_3 == 'Y') 
-                  {printf("The function is not implemented yet\n");}
+                  {addFunctions(1,User_ID);}
                  else if(choice_3 == 'n' || choice_3 == 'N') 
                  {printf("Do you want to continue?\n(y - for yes/n - for no): ");
                  char choice_2;
@@ -550,6 +581,36 @@ void editCourse(char *User_ID) {
                     bool departmentExists = false;
                     do {
                         printf("Current department ID: %s\n\n", oldValue);
+                        while(1){
+                            int count = 1;
+                            for (int i = 0; i < MAX_DEPT; i++){
+                                if (departments[i].active){
+                                    count++;
+                                }
+                            }
+                            if (count == 1) {
+                                printf("\nThere is no departments avilable or they have been deleted.\n");
+                                // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                                // int depchoise = checkYesNo();
+                                // if (depchoise == 1) {
+                                //     // view_delete();
+                                //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                // } 
+                                printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                                int depchoise = checkYesNo();
+                                if (depchoise == 1) {
+                                    addFunctions(1, User_ID);
+                                    // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                    printf("\nAdding Course was incomplete!!\n");
+                                    return;
+                                }else{
+                                    printf("\nAdding Course was incomplete!!\n");
+                                    return;
+                                }
+                            } else{
+                                break;
+                            }
+                        }
                         printf("Enter new department ID: ");
                         scanf("%s", tempDeptId);
 
@@ -563,7 +624,7 @@ void editCourse(char *User_ID) {
                             }
                         }
                         if (!departmentExists) {
-                            printf("Department ID does not exist...! Please enter a valid department ID.\n\n");
+                            printf("Department ID does not exist...!void createLecturer(char *User_ID);\n\n");
                             printf("Do you want to continue editing?\n(y - for yes/n - for no): ");
                             char choice;
                             scanf(" %c", &choice);

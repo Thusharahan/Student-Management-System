@@ -4,13 +4,13 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-#include "SpecialFunct.h"
 #include "Data_Base.h"
-#include "StudentH.h"
 #include "ModuleH.h"
 #include "DepartmentH.h"
 #include "CourseH.h"
 #include "LectureH.h"
+#include "SpecialFunct.h"
+#include "StudentH.h"
 
 #define MAX_LENGTH 50
 #define MAX_USERS 5

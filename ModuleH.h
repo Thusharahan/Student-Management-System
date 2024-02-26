@@ -41,6 +41,9 @@ void reviewHistoryModule();
 void search_modules();
 int get_lecture(int n);
 int get_course(int n);
+void addFunctions(int n, char *User_ID);
+void createLecturer(char *User_ID);
+
 
 //main module
 void Module_main(char *User_ID) {
@@ -140,7 +143,7 @@ void createModule(char *User_ID) {
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
             // createCourse(User_ID);
-            printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+            addFunctions(2,User_ID);
             getchar();
             goto input_courseid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
@@ -220,14 +223,14 @@ void createModule(char *User_ID) {
         }
     }
     if (!validInput) {
-        printf("Error: Lecturer ID does not exist. Please enter a valid ID.\n");
+        printf("Error: Lecturer ID does not exist.\n");
         printf("Do you want to add a new lecturer id?\n(y - for yes/n - for no/ c - for try again): ");
         char choice_1;
         scanf(" %c", &choice_1);
         if (choice_1 == 'y' || choice_1 == 'Y') {
             getchar();
-            // createLecturer(User_ID);
-            printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+            createLecturer(User_ID);
+            // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
             goto input_lecturerid;
         } else if (choice_1 == 'n' || choice_1 == 'N') {
             return;
@@ -281,7 +284,7 @@ void createModule(char *User_ID) {
     }
 
     if (!found) {
-        printf("Module not found or inactive.\n");
+        printf("Module not found or deleted.\n");
        printf("Do you want to review history?\n(y - for yes/n - for no): ");
                 char choice_1;
                  scanf(" %c", &choice_1);
@@ -396,7 +399,7 @@ void editModule(char *User_ID) {
     
     // If module ID doesn't exist, prompt user to continue or not
     if (!validInput) {
-        printf("Error: Module ID does not exist. Please enter a valid ID.\n");
+        printf("Error: Module ID does not exist.\n");
         printf("Do you want to create a new module?\n(y - for yes/n - for no/ c - for try again): ");
         char choice_1;
         scanf(" %c", &choice_1);
@@ -474,8 +477,8 @@ void editModule(char *User_ID) {
                             scanf(" %c", &choice_1);
                             if (choice_1 == 'y' || choice_1 == 'Y') {
                                 getchar();
-                                // createLecturer(User_ID);
-                                printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                createLecturer(User_ID);
+                                // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
                                 goto input_lecturerid;
                             } else if (choice_1 == 'n' || choice_1 == 'N') {
                                 return;
