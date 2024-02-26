@@ -39,8 +39,9 @@ void view_student(char lec_id[MAX_NAME_LEN]);
 void Lecture_main(char *User_ID) {
     int choice;
     do {
-        printf("\nWelcome to the Student Management System - Section of Lecturer\n");
-        printf("Choices of Operations\n");
+        printf("\n--------------------------------------------\n");
+        printf("      STUDENT MANAGEMENT SYSTEM - LECTURE       ");
+        printf("\n--------------------------------------------\n");
         printf("1. Add Lecturer\n");
         printf("2. View Lecturer Details\n");
         printf("3. Update Lecturer Details\n");
@@ -157,6 +158,37 @@ void createLecturer(char *User_ID) {
                     validPhone = 1;
                 }
             } while (!validPhone);
+
+            while(1){
+                int count = 1;
+                for (int i = 0; i < MAX_DEPT; i++){
+                    if (departments[i].active){
+                        count++;
+                    }
+                }
+                if (count == 1) {
+                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                    // int depchoise = checkYesNo();
+                    // if (depchoise == 1) {
+                    //     // view_delete();
+                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                    // } 
+                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                    int depchoise = checkYesNo();
+                    if (depchoise == 1) {
+                        addFunctions(1, User_ID);
+                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }else{
+                        printf("\nAdding Lecture was incomplete!!\n");
+                        return;
+                    }
+                } else{
+                    break;
+                }
+            }
             
             // Print available departments
             printf("Available Departments:\n");
@@ -516,7 +548,11 @@ void updateLecturer(char *User_ID) {
 
                     switch (choice) {
                         case 1:
+<<<<<<< HEAD
                             printf("Enter new name(E.g: RAVI): ");
+=======
+                            printf("Enter new name(E.g: NAME): ");
+>>>>>>> main
                             while (1) {
                                 fgets(lecturers[i].name, sizeof(lecturers[i].name), stdin);
                                 strtok(lecturers[i].name, "\n");
@@ -602,6 +638,36 @@ void updateLecturer(char *User_ID) {
                             }
 
                         case 5:
+                            while(1){
+                                int count = 1;
+                                for (int i = 0; i < MAX_DEPT; i++){
+                                    if (departments[i].active){
+                                        count++;
+                                    }
+                                }
+                                if (count == 1) {
+                                    printf("\nThere is no departments avilable or they have been deleted.\n");
+                                    // printf("Do you want to view history for more details? \n(y - for yes/n - for no): ");
+                                    // int depchoise = checkYesNo();
+                                    // if (depchoise == 1) {
+                                    //     // view_delete();
+                                    //     printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                    // } 
+                                    printf("Do you want to add any department?\n(y - for yes/n - for no): ");
+                                    int depchoise = checkYesNo();
+                                    if (depchoise == 1) {
+                                        addFunctions(1, User_ID);
+                                        // printf("\nThis functionality is not implemented yet!\nPlease try another option.\n");
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }else{
+                                        printf("\nAdding Lecture was incomplete!!\n");
+                                        return;
+                                    }
+                                } else{
+                                    break;
+                                }
+                            }
                             // Print available departments
                             printf("Available Departments:\n");
                             for (int i = 0; i < MAX_DEPT; i++) {
@@ -855,7 +921,3 @@ void view_student(char lec_id[]) {
     }
     printf("-------------------------------------------------------------------------------------------------------\n");
 }
-
-
-
-

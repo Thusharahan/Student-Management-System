@@ -18,6 +18,8 @@
 #define MAX_WORDS 100
 #define MAX_WORD_LENGTH 100
 
+int checkYesNo();
+
 // Function to convert a string to lowercase
 void strToLower(char *str) {
     while (*str) {
@@ -74,32 +76,32 @@ int getInput(char *words[], int numWords) {
     
 }
 
-// void addFunctions(int n, char *User_ID){
-//     switch (n)
-//     {
-//     case 1:
-//         // add_department();
-//         printf("\nDo you want to add courses for the department?\n(y - for yes/n - for no): ");
-//         int choice = checkYesNo();
-//         if(choice == 1){
-//             addFunctions(2, User_ID);
-//         } else{
-//             break;
-//         }
-//     case 2:
-//         createCourse(User_ID);
-//         printf("\nDo you want to create modules for the course?\n(y - for yes/n - for no): ");
-//         int choice1 = checkYesNo();
-//         if(choice1 == 1){
-//             addFunctions(3, User_ID);
-//         } else{
-//             break;
-//         }
-//     case 3:
-//         createModule(User_ID);
-//         break;
+void addFunctions(int n, char *User_ID){
+    switch (n)
+    {
+    case 1:
+        add_department();
+        printf("\nDo you want to add courses for the department?\n(y - for yes/n - for no): ");
+        int choice = checkYesNo();
+        if(choice == 1){
+            addFunctions(2, User_ID);
+        } else{
+            break;
+        }
+    case 2:
+        createCourse(User_ID);
+        printf("\nDo you want to create modules for the course?\n(y - for yes/n - for no): ");
+        int choice1 = checkYesNo();
+        if(choice1 == 1){
+            addFunctions(3, User_ID);
+        } else{
+            break;
+        }
+    case 3:
+        createModule(User_ID);
+        break;
 
-//     default:
-//         break;
-//     }
-// }
+    default:
+        break;
+    }
+}
